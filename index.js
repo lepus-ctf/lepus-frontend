@@ -2,6 +2,7 @@
 
 var app = require('app');
 var BrowserWindow = require('browser-window');
+var Menu = require('menu');
 
 require('crash-reporter').start();
 
@@ -21,3 +22,28 @@ app.on('ready', function() {
 		mainWindow = null;
 	});
 });
+
+var menu = Menu.buildFromTemplate([
+		{
+			label: 'TDUCTF',
+			submenu: [
+			{label: 'Settings'},
+			{label: 'Quit'}
+			]
+		},
+		{
+			label: 'Edit',
+			submenu: [
+			{label: 'Copy', selector: 'copy'},
+			{label: 'Paste', selector: 'paste'}
+			]
+		},
+		{
+			label: 'Help',
+			submenu: [
+			{label: 'About'},
+			{label: 'Contact to admin'},
+			]
+		}
+]);
+Menu.setApplicationMenu(menu);
