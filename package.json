@@ -1,0 +1,28 @@
+{
+  "name": "tductf-frontend",
+  "version": "0.0.1",
+  "description": "TDUCTF front-end application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mzyy94/tductf-frontend.git"
+  },
+  "keywords": [
+    "tductf",
+    "ctf",
+    "electron"
+  ],
+  "author": "mzyy94",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mzyy94/tductf-frontend/issues"
+  },
+  "homepage": "https://github.com/mzyy94/tductf-frontend",
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "electron-prebuilt": "^0.30.4"
+  }
+}

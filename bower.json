@@ -1,0 +1,27 @@
+{
+  "name": "tductf-frontend",
+  "main": "index.js",
+  "version": "0.0.1",
+  "authors": [
+    "Yuki MIZUNO <mizuyuu0904@gmail.com>"
+  ],
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "keywords": [
+    "tductf",
+    "electron"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "skyblue": "~1.0.4"
+  }
+}
