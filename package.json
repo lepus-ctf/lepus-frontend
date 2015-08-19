@@ -4,7 +4,8 @@
   "description": "TDUCTF front-end application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "gulp compile"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   },
   "homepage": "https://github.com/mzyy94/tductf-frontend",
   "devDependencies": {
-    "electron-prebuilt": "^0.30.4"
+    "electron-prebuilt": "^0.30.4",
+    "gulp-babel": "^5.2.0",
+    "gulp-load-plugins": "^1.0.0-rc.1"
   },
   "dependencies": {
     "better-console": "^0.2.4",
