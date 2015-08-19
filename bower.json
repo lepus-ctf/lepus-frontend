@@ -22,6 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "skyblue": "~1.0.4"
+    "skyblue": "~1.0.4",
+    "react": "~0.13.3"
   }
 }
