@@ -11,8 +11,9 @@ export class Main extends React.Component {
 		this.state = {
 			point: 0,
 			solved: 0,
-			problem: {
-				update: 0
+			update: {
+				problem: 0,
+				announce: 0
 			}
 		};
 	}
@@ -47,13 +48,14 @@ export class Main extends React.Component {
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
 						<Link className="item" to="problems">
-							{this.state.problem.update > 0 ? <div className="ui small teal label">{this.state.problem.update}</div> : "" }
+							{this.state.update.problem > 0 ? <div className="ui small teal label">{this.state.update.problem}</div> : "" }
 							Problems
 						</Link>
 						<Link className="item" to="ranking">
 							Ranking
 						</Link>
 						<Link className="item" to="announce">
+							{this.state.update.announce > 0 ? <div className="ui small red label">{this.state.update.announce}</div> : "" }
 							Announce
 						</Link>
 					</div>
