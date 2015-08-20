@@ -55,6 +55,7 @@
     "gulp-watch": "^4.3.5",
     "map-stream": "0.0.6",
     "react": "^0.13.3",
+    "react-router": "^0.13.3",
     "require-dot-file": "^0.4.0",
     "semantic-ui": "^2.0.8",
     "yamljs": "^0.2.3"
