@@ -1,6 +1,10 @@
 import React from 'react';
 
 export class Login extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {pending: false};
+	}
 	componentWillMount() {
 		document.body.style.backgroundColor = "black";
 	}
@@ -10,7 +14,9 @@ export class Login extends React.Component {
 	tryLogin() {
 		// AJAX
 		// Transition
-		return true
+		this.setState({
+			pending: !this.state.pending
+		});
 	}
 	signUp() {
 		// AJAX
@@ -49,10 +55,11 @@ export class Login extends React.Component {
 									</div>
 								</div>
 								<div className="ui buttons">
-								<button className="ui positive button" onClick={this.tryLogin}>Login</button>
+								<input type="button" className={'ui positive button' + (this.state.pending ? ' disabled' : '')} onClick={this.tryLogin.bind(this)} value="Login" />
 								<div className="or"></div>
-								<button className="ui button" onClick={this.signUp}>Sign up</button>
+								<input type="button" className="ui button" onClick={this.signUp.bind(this)} value="Sign up" />
 								</div>
+								<div className={'ui inline centered loader' + (this.state.pending ? ' active' : ' disabled ')} ></div>
 							</div>
 							<div className="ui error message"></div>
 						</form>
