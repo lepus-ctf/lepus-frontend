@@ -2,7 +2,7 @@
   "name": "tductf-frontend",
   "version": "0.0.1",
   "description": "TDUCTF front-end application",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "gulp compile"
