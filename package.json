@@ -5,7 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "gulp compile"
+    "compile": "gulp compile",
+    "start": "electron .",
+    "packager": "electron-packager . TDUCTF-2015 --platform=all --arch=all --version=0.30.4",
+    "postinstall": "cd semantic && gulp build"
   },
   "repository": {
     "type": "git",
