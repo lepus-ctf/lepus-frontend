@@ -1,9 +1,15 @@
 import React from 'react';
+var request = require('superagent');
 
 export class Login extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {pending: false};
+		this.state = {
+			username: "",
+			password: "",
+			pending: false,
+			error: false
+		};
 	}
 	componentWillMount() {
 		document.body.style.backgroundColor = "black";
@@ -11,12 +17,34 @@ export class Login extends React.Component {
 	componentWillUnmount() {
 		document.body.style.backgroundColor = null;
 	}
+	changeText(e) {
+		var value = {}
+		value[e.target.name] = e.target.value;
+		this.setState(value);
+	}
 	tryLogin() {
-		// AJAX
-		// Transition
 		this.setState({
-			pending: !this.state.pending
+			pending: true,
+			error: false
 		});
+
+		var own = this;
+		request
+			.post('http://score.sakura.tductf.org/api/auth.json')
+			.send({username: this.state.username, password: this.state.password})
+			.end((err, res) => {
+				if (err) {
+					console.error(err);
+					console.error(res.body.detail);
+					own.setState({
+						pending: false,
+						error: true
+					});
+					React.render(<p>{res.body.detail}</p>, document.querySelector('.ui.error.message'));
+				} else if (own.state.username == res.body.username) {
+					own.context.router.transitionTo("main");
+				}
+			});
 	}
 	signUp() {
 		// AJAX
@@ -40,18 +68,18 @@ export class Login extends React.Component {
 								Welcome to TDUCTF 2015
 							</div>
 						</h2>
-						<form className="ui large form">
+						<form className={'ui large form' + (this.state.error ? ' error' : '')}>
 							<div className="ui">
 								<div className="field">
 									<div className="ui left icon input">
 										<i className="user icon"></i>
-										<input type="text" name="user" placeholder="User name" />
+										<input type="text" name="username" placeholder="Username" onChange={this.changeText.bind(this)} value={this.state.username} />
 									</div>
 								</div>
 								<div className="field">
 									<div className="ui left icon input">
 										<i className="lock icon"></i>
-										<input type="password" name="password" placeholder="Password" />
+										<input type="password" name="password" placeholder="Password" onChange={this.changeText.bind(this)} value={this.state.password} />
 									</div>
 								</div>
 								<div className="ui buttons">
@@ -67,4 +95,7 @@ export class Login extends React.Component {
 				</div>
 			   );
 	}
+};
+Login.contextTypes = {
+  router: React.PropTypes.func.isRequired
 };

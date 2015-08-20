@@ -6,6 +6,7 @@ import {Problems} from './js/problems';
 import {Ranking} from './js/ranking';
 import {Announce} from './js/announce';
 import {Main} from './js/main';
+import {Top} from './js/top';
 
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
@@ -13,22 +14,19 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 
 var routes = (
-		<Route name="main" path="/" handler={Main}>
-			<Route name="dashboard" handler={Dashboard}/>
-			<Route name="problems" handler={Problems}/>
-			<Route name="ranking" handler={Ranking}/>
-			<Route name="announce" handler={Announce}/>
-			<DefaultRoute handler={Dashboard}/>
+		<Route path="/" handler={Top}>
+			<Route path="/login" handler={Login} />
+			<Route name="main" handler={Main}>
+				<Route name="dashboard" handler={Dashboard}/>
+				<Route name="problems" handler={Problems}/>
+				<Route name="ranking" handler={Ranking}/>
+				<Route name="announce" handler={Announce}/>
+				<DefaultRoute handler={Dashboard}/>
+			</Route>
+			<DefaultRoute handler={Login}/>
 		</Route>
 		);
 
-// TODO: check login cookie
-var hasCookie = true;
-if (!hasCookie) {
-	React.render(<Login />, document.body);
-} else {
-	Router.run(routes, function (Handler) {
-		React.render(<Handler />, document.body);
-	});
-}
-
+Router.run(routes, (Handler) => {
+	React.render(<Handler />, document.getElementById("content"));
+})

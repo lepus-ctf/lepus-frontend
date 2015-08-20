@@ -17,6 +17,19 @@ export class Main extends React.Component {
 			}
 		};
 	}
+	static willTransitionTo(transition) {
+		//TODO: check logon status
+		var logon = true;
+		if (!logon){
+			transition.redirect('/login');
+		}
+	}
+	componentWillMount() {
+		document.body.style.backgroundColor = "#1abc9c";
+	}
+	componentWillUnmount() {
+		document.body.style.backgroundColor = null;
+	}
 	render() {
 		var fullHeight = {
 			height: "100%"
