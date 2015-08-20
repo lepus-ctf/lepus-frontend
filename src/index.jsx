@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import {Login} from './js/login';
 import {Dashboard} from './js/dashboard';
+import {Problems} from './js/problems';
 import {Main} from './js/main';
 
 var DefaultRoute = Router.DefaultRoute;
@@ -12,6 +13,7 @@ var RouteHandler = Router.RouteHandler;
 var routes = (
 		<Route name="main" path="/" handler={Main}>
 			<Route name="dashboard" handler={Dashboard}/>
+			<Route name="problems" handler={Problems}/>
 			<DefaultRoute handler={Dashboard}/>
 		</Route>
 		);

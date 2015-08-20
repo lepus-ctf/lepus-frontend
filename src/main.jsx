@@ -43,6 +43,7 @@ export class Main extends React.Component {
 							</div>
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
+						<Link className="item" to="problems">Problems</Link>
 					</div>
 				</div>
 			   );
