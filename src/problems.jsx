@@ -36,7 +36,7 @@ export class Problems extends React.Component {
 			return (
 				<div className="ui card">
 					<div className="content">
-						<Link className="header" to="ranking">{problem["title"]}</Link>
+						<Link className="header" to="problems">{problem["title"]}</Link>
 						<div className="meta">{problem["genre"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
