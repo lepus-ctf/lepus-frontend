@@ -4,12 +4,6 @@ export class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-	componentWillMount() {
-		document.body.style.backgroundColor = "#cccccc";
-	}
-	componentWillUnmount() {
-		document.body.style.backgroundColor = null;
-	}
 	render() {
 		var fullHeight = {
 			height: "100%",

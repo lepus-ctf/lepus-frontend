@@ -5,7 +5,85 @@
 		<title>TDUCTF 2015</title>
 		<link rel="stylesheet" href="./semantic/dist/semantic.min.css" type="text/css" />
 	</head>
-	<body>
+	<body id="content" style="background-color: #1abc9c;">
 	</body>
 	<script src="js/index.js"></script>
+	<script src="./node_modules/particles.js/particles.js"></script>
+	<script>
+		particlesJS('content',
+				{
+					"particles": {
+						"number": {
+							"value": 16,
+							"density": {
+								"enable": false
+							}
+						},
+						"color": {
+							"value": "#ffffff"
+						},
+						"shape": {
+							"type": "polygon",
+							"stroke": {
+								"width": 0
+							},
+							"polygon": {
+								"nb_sides": 5
+							}
+						},
+						"opacity": {
+							"value": 1,
+							"random": false,
+							"anim": {
+								"enable": false
+							}
+						},
+						"size": {
+							"value": 8,
+							"random": true,
+							"anim": {
+								"enable": false
+							}
+						},
+						"line_linked": {
+							"enable": false
+						},
+						"move": {
+							"enable": true,
+							"speed": 6,
+							"direction": "none",
+							"random": false,
+							"straight": false,
+							"out_mode": "out",
+							"attract": {
+								"enable": false
+							}
+						}
+					},
+					"interactivity": {
+						"detect_on": "window",
+						"events": {
+							"onhover": {
+								"enable": false
+							},
+							"onclick": {
+								"enable": false
+							},
+							"resize": true
+						}
+					},
+					"retina_detect": true
+				}
+		);
+	</script>
+	<style>
+		canvas {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			z-index: -1;
+		}
+	</style>
 </html>
