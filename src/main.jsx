@@ -10,7 +10,10 @@ export class Main extends React.Component {
 		super(props);
 		this.state = {
 			point: 0,
-			solved: 0
+			solved: 0,
+			problem: {
+				update: 0
+			}
 		};
 	}
 	render() {
@@ -43,7 +46,10 @@ export class Main extends React.Component {
 							</div>
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
-						<Link className="item" to="problems">Problems</Link>
+						<Link className="item" to="problems">
+							{this.state.problem.update > 0 ? <div className="ui small teal label">{this.state.problem.update}</div> : "" }
+							Problems
+						</Link>
 					</div>
 				</div>
 			   );
