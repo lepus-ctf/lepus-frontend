@@ -1,5 +1,5 @@
 import React from 'react';
-var request = require('superagent');
+import Api from './api'
 
 export class Login extends React.Component {
 	constructor(props) {
@@ -29,22 +29,15 @@ export class Login extends React.Component {
 		});
 
 		var own = this;
-		request
-			.post('http://score.sakura.tductf.org/api/auth.json')
-			.send({username: this.state.username, password: this.state.password})
-			.end((err, res) => {
-				if (err) {
-					console.error(err);
-					console.error(res.body.detail);
-					own.setState({
-						pending: false,
-						error: true
-					});
-					React.render(<p>{res.body.detail}</p>, document.querySelector('.ui.error.message'));
-				} else if (own.state.username == res.body.username) {
-					own.context.router.transitionTo("main");
-				}
+		Api.login(this.state.username, this.state.password, () => {
+			own.context.router.transitionTo("main");
+		}, (err, res) => {
+			own.setState({
+				pending: false,
+				error: true
 			});
+			React.render(<p>{res.body.detail}</p>, document.querySelector('.ui.error.message'));
+		})
 	}
 	signUp() {
 		// AJAX

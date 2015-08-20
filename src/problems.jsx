@@ -1,8 +1,22 @@
 import React from 'react';
+import Api from './api'
 
 export class Problems extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			problems: []
+		};
+	}
+	componentWillMount() {
+		// Tap tap API server
+		Api.problems((json) => {
+			this.setState({
+				problems: json
+			});
+		}, (err, res) => {
+			// TODO: error notification
+		})
 	}
 	render() {
 		var fullHeight = {
@@ -10,28 +24,17 @@ export class Problems extends React.Component {
 			paddingRight: "200px",
 			paddingTop: "20px"
 		};
-		// TODO: AJAX
-		// WARN: Dummy data
-		var problems = [
-		{title: "Hakoniwa XSS season 2", genre: "Web", level: 3, point: 300},
-		{title: "Non-Non Biyori repeat", genre: "Network", level: 2, point: 100},
-		{title: "Yuru yuri nachuyasumi", genre: "Misc", level: 5, point: 500},
-		{title: "Charlotte", genre: "Binary", level: 2, point: 200},
-		{title: "Dande raionn", genre: "Crypto", level: 5, point: 300},
-		{title: "Honny come!", genre: "Pwn", level: 4, point: 20},
-		{title: "Working!!!", genre: "Web", level: 3, point: 100},
-		{title: "Etotama", genre: "Misc", level: 1, point: 100},
-		{title: "Sorega seiyu", genre: "Binary", level: 4, point: 200},
-		]
-		var cards = problems.map(function(problem) {
+
+		var cards = this.state.problems.map(function(problem) {
 			var difficulty = [];
-			for (var i=0; i < problem["level"]; ++i)
+			// temporary commented out
+			//for (var i=0; i < problem["level"]; ++i)
 				difficulty.push(<i className="lightning icon"></i>);
 			return (
 				<div className="ui card">
 					<div className="content">
 						<Link className="header" to="problems">{problem["title"]}</Link>
-						<div className="meta">{problem["genre"]}</div>
+						<div className="meta">{problem["category"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
 								{problem["point"]}
