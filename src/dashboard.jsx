@@ -5,13 +5,8 @@ export class Dashboard extends React.Component {
 		super(props);
 	}
 	render() {
-		var fullHeight = {
-			height: "100%",
-			paddingRight: "220px",
-			paddingTop: "20px"
-		};
 		return (
-				<div className="ui container" style={fullHeight}>
+				<div className="ui container">
 					<h1 className="ui top header blue">Countdown</h1>
 					<div className="ui segment blue ">
 					<div className="ui three statistics">

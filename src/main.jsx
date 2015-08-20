@@ -31,13 +31,15 @@ export class Main extends React.Component {
 		document.body.style.backgroundColor = null;
 	}
 	render() {
-		var fullHeight = {
-			height: "100%"
+		var mainStyle = {
+			height: "100%",
+			padding: "20px",
+			paddingLeft: "220px",
 		};
 		return (
-				<div className="ui " style={fullHeight}>
-					<RouteHandler/>
-					<div className="ui right fixed vertical menu inverted">
+				<div className="ui" style={mainStyle}>
+					<RouteHandler />
+					<div className="ui left fixed vertical menu inverted">
 						<div className="item">
 							<img className="ui mini image" alt="user icon" src="" />
 							<div className="ui statistics mini horizontal inverted">

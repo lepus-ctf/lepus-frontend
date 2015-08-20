@@ -19,12 +19,6 @@ export class Problems extends React.Component {
 		})
 	}
 	render() {
-		var fullHeight = {
-			height: "100%",
-			paddingRight: "200px",
-			paddingTop: "20px"
-		};
-
 		var cards = this.state.problems.map(function(problem) {
 			var difficulty = [];
 			// temporary commented out
@@ -55,7 +49,7 @@ export class Problems extends React.Component {
 				);
 		})
 		return (
-				<div className="ui container" style={fullHeight}>
+				<div className="ui container">
 					<div className="ui text menu">
 						<div className="ui item">
 							<div className="ui toggle checkbox">
