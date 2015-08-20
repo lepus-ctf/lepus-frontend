@@ -50,6 +50,12 @@ export class Main extends React.Component {
 							{this.state.problem.update > 0 ? <div className="ui small teal label">{this.state.problem.update}</div> : "" }
 							Problems
 						</Link>
+						<Link className="item" to="ranking">
+							Ranking
+						</Link>
+						<Link className="item" to="announce">
+							Announce
+						</Link>
 					</div>
 				</div>
 			   );

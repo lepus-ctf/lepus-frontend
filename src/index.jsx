@@ -3,6 +3,8 @@ import Router from 'react-router';
 import {Login} from './js/login';
 import {Dashboard} from './js/dashboard';
 import {Problems} from './js/problems';
+import {Ranking} from './js/ranking';
+import {Announce} from './js/announce';
 import {Main} from './js/main';
 
 var DefaultRoute = Router.DefaultRoute;
@@ -14,6 +16,8 @@ var routes = (
 		<Route name="main" path="/" handler={Main}>
 			<Route name="dashboard" handler={Dashboard}/>
 			<Route name="problems" handler={Problems}/>
+			<Route name="ranking" handler={Ranking}/>
+			<Route name="announce" handler={Announce}/>
 			<DefaultRoute handler={Dashboard}/>
 		</Route>
 		);
