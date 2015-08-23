@@ -88,7 +88,7 @@ export class Problem extends React.Component {
 				delete downloadState[filename];
 				this.setState({downloading: downloadState});
 			}.bind(this));
-		}.bind(this)));
+		}.bind(this));
 	}
 	render() {
 		var progressStyle = {
