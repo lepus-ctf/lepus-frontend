@@ -2,6 +2,7 @@ export class Api {
 	constructor() {
 		this.agent = require('superagent').agent();
 		this.apiEndpoint = "http://score.sakura.tductf.org/api/";
+		this.token = "";
 	}
 	login(username, password, success, failure) {
 		this.agent
@@ -13,6 +14,7 @@ export class Api {
 					console.error((res && res.body) ? res.body.detail : res);
 					failure(err, res);
 				} else if (username == res.body.username) {
+					this.token = res.req.res.headers['set-cookie'].toString().match(/csrftoken=(.*?)(?:$|;)/)[1];
 					this.agent.saveCookies(res);
 					success();
 				}
@@ -33,5 +35,42 @@ export class Api {
 				}
 			});
 	}
+
+	problem(id, success, failure) {
+		this.agent
+			.get(this.apiEndpoint + 'questions/' + id + '.json')
+			.end((err, res) => {
+				if (err) {
+					console.error(err);
+					console.error((res && res.body) ? res.body.detail : res);
+					failure(err, res);
+				} else {
+					this.agent.saveCookies(res);
+					success(res.body);
+				}
+			});
+	}
+
+	submitFlag(id, flag, success, failure) {
+		console.log(flag)
+		this.agent
+			.post(this.apiEndpoint + 'answer.json')
+			.set('X-CSRFToken', this.token)
+			.send({question: id, answer: flag})
+			.end((err, res) => {
+				if (res.body.is_correct) {
+					this.agent.saveCookies(res);
+					success();
+				} else if (err) {
+					console.error(err);
+					console.error((res && res.body) ? res.body.answer : res);
+					failure(err, res);
+				} else {
+					res.body.answer = "Incorrect.";
+					failure(err, res);
+				}
+			});
+	}
+
 };
 export default new Api();
