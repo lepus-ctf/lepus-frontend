@@ -1,7 +1,7 @@
 export class Api {
 	constructor() {
 		this.agent = require('superagent').agent();
-		this.apiEndpoint = "http://score.sakura.tductf.org/api/";
+		this.apiEndpoint = "https://score.sakura.tductf.org/api/";
 		this.token = "";
 	}
 	login(username, password, success, failure) {
