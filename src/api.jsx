@@ -54,6 +54,21 @@ export class Api {
 			});
 	}
 
+	announcements(success, failure) {
+		this.agent
+			.get(this.apiEndpoint + '/notices.json')
+			.end((err, res) => {
+				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
+					console.error(err);
+					failure(err, res);
+				} else {
+					this.agent.saveCookies(res);
+					success(res.body);
+				}
+			});
+	}
+
 	submitFlag(id, flag, success, failure) {
 		console.log(flag)
 		this.agent
