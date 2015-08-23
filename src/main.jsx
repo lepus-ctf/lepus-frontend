@@ -9,8 +9,9 @@ export class Main extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			point: 0,
+			point: this.props.query.userinfo.points,
 			solved: 0,
+			userinfo: this.props.query.userinfo,
 			update: {
 				problem: 0,
 				announce: 0
@@ -40,8 +41,8 @@ export class Main extends React.Component {
 				<div className="ui" style={mainStyle}>
 					<RouteHandler />
 					<div className="ui left fixed vertical menu inverted">
+						<h1 className="header item">TDUCTF</h1>
 						<div className="item">
-							<img className="ui mini image" alt="user icon" src="" />
 							<div className="ui statistics mini horizontal inverted">
 								<div className="statistic">
 									<div className="value">
@@ -66,7 +67,7 @@ export class Main extends React.Component {
 							{this.state.update.problem > 0 ? <div className="ui small teal label">{this.state.update.problem}</div> : "" }
 							Problems
 						</Link>
-						<Link className="item" to="ranking">
+						<Link className="item" to="ranking" query={{teamid: this.state.userinfo.team}}>
 							Ranking
 						</Link>
 						<Link className="item" to="announce">

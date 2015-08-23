@@ -28,11 +28,10 @@ export class Login extends React.Component {
 			error: false
 		});
 
-		var own = this;
-		Api.login(this.state.username, this.state.password, () => {
-			own.context.router.transitionTo("main");
+		Api.login(this.state.username, this.state.password, (userinfo) => {
+			this.context.router.transitionTo("main", {}, {userinfo: userinfo});
 		}, (err, res) => {
-			own.setState({
+			this.setState({
 				pending: false,
 				error: true
 			});
