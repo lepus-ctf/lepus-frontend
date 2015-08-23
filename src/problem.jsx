@@ -12,6 +12,7 @@ export class Problem extends React.Component {
 		this.state = {
 			problem: {},
 			flagText: "",
+			downloading: {},
 			pending: false,
 			error: false,
 			correct: false
@@ -30,7 +31,6 @@ export class Problem extends React.Component {
 		})
 	}
 	changeText(e) {
-		console.log(e);
 		var value = {}
 		value[e.target.name] = e.target.value;
 		this.setState(value);
@@ -57,13 +57,22 @@ export class Problem extends React.Component {
 		})
 	}
 	saveFile(filename, filepath) {
-		// TODO: Show download progress
-		console.log("File saving: ", dialog.showSaveDialog({ defaultPath: filename}, function(savepath) {
+		if (this.state.downloading[filename]) {
+			return;
+		}
+		console.log("File saving");
+		dialog.showSaveDialog({ defaultPath: filename}, function(savepath) {
 			if (savepath === undefined) {
 				console.log("File saving canceld");
 				return;
 			}
+			var downloadState = this.state.downloading;
+			downloadState[filename] = true;
+			this.setState({downloading: downloadState});
 			Api.downloadFile(filepath, function(blob) {
+				var downloadState = this.state.downloading;
+				delete downloadState[filename];
+				this.setState({downloading: downloadState});
 				fs.writeFile(savepath, blob, function (err) {
 					if (err) {
 						// TODO: Show error notification
@@ -72,22 +81,23 @@ export class Problem extends React.Component {
 						console.log("File saving done");
 					}
 				});
-			}, function() {
+			}.bind(this), function() {
 				// TODO: Show error notification
 				console.error("File download error");
-			});
-		}));
+				var downloadState = this.state.downloading;
+				delete downloadState[filename];
+				this.setState({downloading: downloadState});
+			}.bind(this));
+		}.bind(this)));
 	}
 	render() {
 		var progressStyle = {
 			width: "0%"
 		};
-		console.log(JSON.stringify(this.state.problem));
-		console.log(this.saveFIle)
 		if (!this.state.problem.title) return (<div></div>);
 		var attachments = this.state.problem["files"].map(function(file) {
 			return (
-					<button className="ui labeled orange icon button" onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
+					<button className={'ui labeled orange icon button' + (this.state.downloading[file["name"]] ? ' loading' : '')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
 					<i className="file archive outline icon"></i>
 					{file["name"]}
 					</button>
