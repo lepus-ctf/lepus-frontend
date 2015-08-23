@@ -10,15 +10,16 @@ export class Api {
 			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})
 			.end((err, res) => {
-				if (err) {
+				if (err || username != res.body.username) {
 					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
 					console.error(err);
+					console.error(res.message);
 					console.error("Login failed.");
 					failure(err, res);
-				} else if (username == res.body.username) {
+				} else {
 					this.token = res.req.res.headers['set-cookie'].toString().match(/csrftoken=(.*?)(?:$|;)/)[1];
 					this.agent.saveCookies(res);
-					success();
+					success(res.body);
 				}
 			});
 	}
