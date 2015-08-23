@@ -27,6 +27,7 @@ export class Api {
 	problems(success, failure) {
 		this.agent
 			.get(this.apiEndpoint + '/questions.json')
+			.query({include: '1'})
 			.end((err, res) => {
 				if (err) {
 					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
@@ -42,6 +43,7 @@ export class Api {
 	problem(id, success, failure) {
 		this.agent
 			.get(this.apiEndpoint + '/questions/' + id + '.json')
+			.query({include: '1'})
 			.end((err, res) => {
 				if (err) {
 					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};

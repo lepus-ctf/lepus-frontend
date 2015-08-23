@@ -119,7 +119,7 @@ export class Problem extends React.Component {
 								</div>
 								<div className="description">
 											<div className="ui raised segment">
-												<span className="ui top left attached label">{this.state.problem["category"]}</span>
+												<span className="ui top left attached label">{this.state.problem["category"]["name"]}</span>
 												<pre>{this.state.problem["sentence"]}</pre>
 											</div>
 								</div>
