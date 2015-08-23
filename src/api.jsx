@@ -79,6 +79,21 @@ export class Api {
 			});
 	}
 
+	teamlist(success, failure) {
+		this.agent
+			.get(this.apiEndpoint + '/teams.json')
+			.set('X-CSRFToken', this.token)
+			.end((err, res) => {
+				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
+					console.error(err);
+					failure(err, res);
+				} else {
+					success(res.body);
+				}
+			});
+	}
+
 	downloadFile(filepath, success, failure) {
 		this.agent
 			.get(this.serverUrl + filepath)
