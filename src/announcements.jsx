@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 
-export class Announce extends React.Component {
+export class Announcements extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

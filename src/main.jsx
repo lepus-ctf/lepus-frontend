@@ -14,7 +14,7 @@ export class Main extends React.Component {
 			userinfo: this.props.query.userinfo,
 			update: {
 				problem: 0,
-				announce: 0
+				announcement: 0
 			}
 		};
 	}
@@ -70,9 +70,9 @@ export class Main extends React.Component {
 						<Link className="item" to="ranking" query={{teamid: this.state.userinfo.team}}>
 							Ranking
 						</Link>
-						<Link className="item" to="announce">
-							{this.state.update.announce > 0 ? <div className="ui small red label">{this.state.update.announce}</div> : "" }
-							Announce
+						<Link className="item" to="announcements">
+							{this.state.update.announcement > 0 ? <div className="ui small red label">{this.state.update.announcement}</div> : "" }
+							Announcements
 						</Link>
 					</div>
 				</div>

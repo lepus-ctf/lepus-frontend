@@ -5,7 +5,7 @@ import {Dashboard} from './js/dashboard';
 import {Problems} from './js/problems';
 import {Problem} from './js/problem';
 import {Ranking} from './js/ranking';
-import {Announce} from './js/announce';
+import {Announcements} from './js/announcements';
 import {Main} from './js/main';
 import {Top} from './js/top';
 
@@ -23,7 +23,7 @@ var routes = (
 				</Route>
 					<Route name="problem" path="/problems/:id" handler={Problem}/>
 				<Route name="ranking" handler={Ranking}/>
-				<Route name="announce" handler={Announce}/>
+				<Route name="announcements" handler={Announcements}/>
 				<DefaultRoute handler={Dashboard}/>
 			</Route>
 			<DefaultRoute handler={Login}/>
