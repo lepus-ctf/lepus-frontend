@@ -36,7 +36,7 @@ export class Login extends React.Component {
 				pending: false,
 				error: true
 			});
-			React.render(<p>{res.body.detail}</p>, document.querySelector('.ui.error.message'));
+			React.render(<p>{res.message}</p>, document.querySelector('.ui.error.message'));
 		})
 	}
 	signUp() {

@@ -11,8 +11,9 @@ export class Api {
 			.send({username: username, password: password})
 			.end((err, res) => {
 				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
 					console.error(err);
-					console.error((res && res.body) ? res.body.detail : res);
+					console.error("Login failed.");
 					failure(err, res);
 				} else if (username == res.body.username) {
 					this.token = res.req.res.headers['set-cookie'].toString().match(/csrftoken=(.*?)(?:$|;)/)[1];
@@ -27,8 +28,8 @@ export class Api {
 			.get(this.apiEndpoint + '/questions.json')
 			.end((err, res) => {
 				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
 					console.error(err);
-					console.error((res && res.body) ? res.body.detail : res);
 					failure(err, res);
 				} else {
 					this.agent.saveCookies(res);
@@ -42,8 +43,8 @@ export class Api {
 			.get(this.apiEndpoint + '/questions/' + id + '.json')
 			.end((err, res) => {
 				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
 					console.error(err);
-					console.error((res && res.body) ? res.body.detail : res);
 					failure(err, res);
 				} else {
 					this.agent.saveCookies(res);
@@ -59,15 +60,19 @@ export class Api {
 			.set('X-CSRFToken', this.token)
 			.send({question: id, answer: flag})
 			.end((err, res) => {
-				if (res.body.is_correct) {
+				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
+					console.error(err);
+					failure(err, res);
+				} else if (res.body.is_correct) {
 					this.agent.saveCookies(res);
 					success();
-				} else if (err) {
 					console.error(err);
 					console.error((res && res.body) ? res.body.answer : res);
 					failure(err, res);
 				} else {
-					res.body.answer = "Incorrect.";
+					console.error(err);
+					console.error(res);
 					failure(err, res);
 				}
 			});
@@ -78,8 +83,8 @@ export class Api {
 			.get(this.serverUrl + filepath)
 			.end((err, res) => {
 				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
 					console.error(err);
-					console.error((res && res.body) ? res.body.detail : res);
 					failure(err, res);
 				} else {
 					this.agent.saveCookies(res);
