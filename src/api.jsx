@@ -55,7 +55,7 @@ export class Api {
 	submitFlag(id, flag, success, failure) {
 		console.log(flag)
 		this.agent
-			.post(this.apiEndpoint + '/answer.json')
+			.post(this.apiEndpoint + '/answers.json')
 			.set('X-CSRFToken', this.token)
 			.send({question: id, answer: flag})
 			.end((err, res) => {
