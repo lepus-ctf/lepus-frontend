@@ -31,7 +31,7 @@ export class Problems extends React.Component {
 						<div className="meta">{problem["category"]["name"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
-								{problem["point"]}
+								{problem["points"]}
 							</div>
 							<div className="label">
 								Points
