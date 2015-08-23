@@ -3,6 +3,7 @@ import Router from 'react-router';
 import {Login} from './js/login';
 import {Dashboard} from './js/dashboard';
 import {Problems} from './js/problems';
+import {Problem} from './js/problem';
 import {Ranking} from './js/ranking';
 import {Announce} from './js/announce';
 import {Main} from './js/main';
@@ -18,7 +19,9 @@ var routes = (
 			<Route path="/login" handler={Login} />
 			<Route name="main" handler={Main}>
 				<Route name="dashboard" handler={Dashboard}/>
-				<Route name="problems" handler={Problems}/>
+				<Route name="problems" path="/problems" handler={Problems}>
+				</Route>
+					<Route name="problem" path="/problems/:id" handler={Problem}/>
 				<Route name="ranking" handler={Ranking}/>
 				<Route name="announce" handler={Announce}/>
 				<DefaultRoute handler={Dashboard}/>

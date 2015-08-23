@@ -27,8 +27,8 @@ export class Problems extends React.Component {
 			return (
 				<div className="ui card">
 					<div className="content">
-						<Link className="header" to="problems">{problem["title"]}</Link>
-						<div className="meta">{problem["category"]}</div>
+						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
+						<div className="meta">{problem["category"]["name"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
 								{problem["point"]}
