@@ -23,7 +23,7 @@ export class Ranking extends React.Component {
 	render() {
 		var teamlist = this.state.teams.map((team, index) => {
 			return (
-							<tr className={this.props.query.teamid == team.id ? 'active' : ''}>
+							<tr className={this.props.query.teamid == team.id ? 'active' : ''} key={team.id}>
 								<td>{index + 1}</td>
 								<td>{team.name}</td>
 								<td>{team.points}</td>

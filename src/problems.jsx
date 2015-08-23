@@ -22,10 +22,10 @@ export class Problems extends React.Component {
 		var cards = this.state.problems.map(function(problem) {
 			var difficulty = [];
 			// temporary commented out
-			//for (var i=0; i < problem["level"]; ++i)
-				difficulty.push(<i className="lightning icon"></i>);
+			for (var i = 0; i < problem["points"]; i+=100)
+				difficulty.push(<i className="lightning icon" key={i}></i>);
 			return (
-				<div className="ui card">
+				<div className="ui card" key={problem["id"]}>
 					<div className="content">
 						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
 						<div className="meta">{problem["category"]["name"]}</div>

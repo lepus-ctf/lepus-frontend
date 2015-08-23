@@ -87,7 +87,7 @@ export class Problem extends React.Component {
 		if (!this.state.problem.title) return (<div></div>);
 		var attachments = this.state.problem["files"].map(function(file) {
 			return (
-					<button className="ui labeled orange icon button" onClick={this.saveFile.bind(this, file["name"], file["url"])}>
+					<button className="ui labeled orange icon button" onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
 					<i className="file archive outline icon"></i>
 					{file["name"]}
 					</button>
