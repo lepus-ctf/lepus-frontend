@@ -27,15 +27,39 @@ var menu = Menu.buildFromTemplate([
 		{
 			label: 'TDUCTF',
 			submenu: [
-			{label: 'Settings'},
-			{label: 'Quit'}
+			{
+				label: 'Settings',
+				accelerator: 'CmdOrCtrl+,',
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Quit',
+				accelerator: 'CmdOrCtrl+Q',
+				click: function () {
+					app.quit();
+				}
+			}
 			]
 		},
 		{
-			label: 'Edit',
+			label: 'View',
 			submenu: [
-			{label: 'Copy', selector: 'copy'},
-			{label: 'Paste', selector: 'paste'}
+			{
+				label: 'Toggle Full Screen',
+				accelerator: 'CmdOrCtrl+Shift+F',
+				click: function() {
+					mainWindow.setFullScreen(!mainWindow.isFullScreen());
+				}
+			},
+			{
+				label: 'Toggle developer tool',
+				accelerator: 'CmdOrCtrl+Alt+I',
+				click: function() {
+					mainWindow.toggleDevTools();
+				}
+			}
 			]
 		},
 		{
