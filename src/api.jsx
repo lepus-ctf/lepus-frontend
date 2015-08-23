@@ -1,12 +1,13 @@
 export class Api {
 	constructor() {
 		this.agent = require('superagent').agent();
-		this.apiEndpoint = "https://score.sakura.tductf.org/api/";
+		this.serverUrl = "https://score.sakura.tductf.org";
+		this.apiEndpoint = this.serverUrl + "/api"
 		this.token = "";
 	}
 	login(username, password, success, failure) {
 		this.agent
-			.post(this.apiEndpoint + 'auth.json')
+			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})
 			.end((err, res) => {
 				if (err) {
@@ -23,7 +24,7 @@ export class Api {
 
 	problems(success, failure) {
 		this.agent
-			.get(this.apiEndpoint + 'questions.json')
+			.get(this.apiEndpoint + '/questions.json')
 			.end((err, res) => {
 				if (err) {
 					console.error(err);
@@ -38,7 +39,7 @@ export class Api {
 
 	problem(id, success, failure) {
 		this.agent
-			.get(this.apiEndpoint + 'questions/' + id + '.json')
+			.get(this.apiEndpoint + '/questions/' + id + '.json')
 			.end((err, res) => {
 				if (err) {
 					console.error(err);
@@ -54,7 +55,7 @@ export class Api {
 	submitFlag(id, flag, success, failure) {
 		console.log(flag)
 		this.agent
-			.post(this.apiEndpoint + 'answer.json')
+			.post(this.apiEndpoint + '/answer.json')
 			.set('X-CSRFToken', this.token)
 			.send({question: id, answer: flag})
 			.end((err, res) => {
@@ -68,6 +69,21 @@ export class Api {
 				} else {
 					res.body.answer = "Incorrect.";
 					failure(err, res);
+				}
+			});
+	}
+
+	downloadFile(filepath, success, failure) {
+		this.agent
+			.get(this.serverUrl + filepath)
+			.end((err, res) => {
+				if (err) {
+					console.error(err);
+					console.error((res && res.body) ? res.body.detail : res);
+					failure(err, res);
+				} else {
+					this.agent.saveCookies(res);
+					success(res.body);
 				}
 			});
 	}
