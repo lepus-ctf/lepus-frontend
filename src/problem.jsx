@@ -1,6 +1,8 @@
 import React from 'react';
 import Router from 'react-router';
 import Api from './api'
+global.React = React;
+var md2react = require('md2react');
 var remote = require('remote');
 var dialog = remote.require('dialog');
 var fs = remote.require('fs');
@@ -129,7 +131,7 @@ export class Problem extends React.Component {
 								<div className="description">
 											<div className="ui raised segment">
 												<span className="ui top left attached label">{this.state.problem["category"]["name"]}</span>
-												<pre>{this.state.problem["sentence"]}</pre>
+												{md2react(this.state.problem["sentence"])}
 											</div>
 								</div>
 								<div className="extra">

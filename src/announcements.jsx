@@ -1,5 +1,7 @@
 import React from 'react';
 import Api from './api'
+global.React = React;
+var md2react = require('md2react');
 
 export class Announcements extends React.Component {
 	constructor(props) {
@@ -34,7 +36,7 @@ export class Announcements extends React.Component {
 									</div>
 								</div>
 								<div className="extra text">
-									{announcement["body"]}
+									{md2react(announcement["body"])}
 								</div>
 								<div className="meta">
 								</div>
