@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "gulp compile",
     "start": "electron .",
-    "packager": "electron-packager . TDUCTF-2015 --all --version=0.30.4 --ignore=node_modules/gulp*",
+    "packager": "electron-packager . TDUCTF-2015 --all --version=0.30.5 --ignore=node_modules/gulp*",
     "postinstall": "cd semantic && gulp build"
   },
   "repository": {
