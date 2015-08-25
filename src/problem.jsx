@@ -142,6 +142,8 @@ export class Problem extends React.Component {
 						<div className="ui error message"></div>
 						<div className="ui success message"></div>
 					</form>
+					<div className="ui divider">
+					</div>
 				</div>
 			   );
 	}

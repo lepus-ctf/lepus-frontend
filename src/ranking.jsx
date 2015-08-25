@@ -53,6 +53,8 @@ export class Ranking extends React.Component {
 							{teamlist}
 						</tbody>
 					</table>
+					<div className="ui divider">
+					</div>
 				</div>
 			   );
 	}

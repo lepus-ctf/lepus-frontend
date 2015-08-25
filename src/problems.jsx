@@ -68,6 +68,8 @@ export class Problems extends React.Component {
 					<div className="ui three cards">
 						{cards}
 					</div>
+					<div className="ui divider">
+					</div>
 				</div>
 			   );
 	}

@@ -49,6 +49,8 @@ export class Announcements extends React.Component {
 					<div className="ui feed segment">
 						{announcements}
 					</div>
+					<div className="ui divider">
+					</div>
 				</div>
 				);
 	}
