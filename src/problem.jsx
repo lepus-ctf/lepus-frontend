@@ -131,7 +131,7 @@ export class Problem extends React.Component {
 								<div className="description">
 											<div className="ui raised segment">
 												<span className="ui top left attached label">{this.state.problem["category"]["name"]}</span>
-												{md2react(this.state.problem["sentence"])}
+												{md2react(this.state.problem["sentence"], {gfm: true, tables: true})}
 											</div>
 								</div>
 								<div className="extra">

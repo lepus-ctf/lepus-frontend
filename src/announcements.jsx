@@ -36,7 +36,7 @@ export class Announcements extends React.Component {
 									</div>
 								</div>
 								<div className="extra text">
-									{md2react(announcement["body"])}
+									{md2react(announcement["body"], {gfm: true, tables: true})}
 								</div>
 								<div className="meta">
 								</div>
