@@ -11,7 +11,15 @@ export class Ranking extends React.Component {
 	componentWillMount() {
 		// Tap tap API server
 		Api.teamlist((json) => {
-			json = json.sort((current, next) => {return current.points < next.points})
+			json = json.sort((current, next) => {
+				if (current.points < next.points)
+					return 1;
+				if (current.points > next.points)
+					return -1;
+				if (new Date(current.last_score_time) > new Date(next.last_score_time))
+					return 1;
+				return -1;
+			})
 			this.setState({
 				teams: json,
 				updated: Date()
