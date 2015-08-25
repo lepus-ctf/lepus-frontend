@@ -92,10 +92,18 @@ export class Problem extends React.Component {
 		}.bind(this));
 	}
 	render() {
-		var progressStyle = {
-			width: "0%"
-		};
 		if (!this.state.problem.title) return (<div></div>);
+		var team_status = this.props.query.team_status;
+		var current_problem_status = {};
+		team_status.forEach((t_state) => {
+			if (this.state.problem.id == t_state.id) {
+				current_problem_status = t_state;
+			}
+		}.bind(this))
+		var progress = Math.round(~~current_problem_status.points / this.state.problem["points"] * 100);
+		var progressStyle = {
+			width: progress + "%"
+		};
 		var attachments = this.state.problem["files"].map(function(file) {
 			return (
 					<button className={'ui labeled orange icon button' + (this.state.downloading[file["name"]] ? ' loading' : '')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
@@ -107,7 +115,7 @@ export class Problem extends React.Component {
 		return (
 				<div className="ui container">
 					<div className="ui breadcrumb">
-						<Link className="section" to="problems">Problems</Link>
+						<Link className="section" to="problems" query={{team_status: team_status}}>Problems</Link>
 						<i className="right angle icon divider"></i>
 						<span className="active section">{this.state.problem["title"]}</span>
 					</div>
@@ -133,7 +141,7 @@ export class Problem extends React.Component {
 					<form className={'ui form' + (this.state.error ? ' error' : (this.state.correct ? ' success' : ''))} onSubmit={this.submitFlag.bind(this)}>
 						<div className="ui indicating progress active" data-percent="0">
 							<div className="bar" style={progressStyle} ></div>
-							<div className="label">You got 0 points of {this.state.problem["points"]} points</div>
+							<div className="label">You got {~~current_problem_status.points} points of {this.state.problem["points"]} points</div>
 						</div>
 						<div className="ui right action left icon input">
 							<i className="flag icon"></i>

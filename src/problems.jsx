@@ -5,7 +5,8 @@ export class Problems extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			problems: []
+			problems: [],
+			hide_solved: false
 		};
 	}
 	componentWillMount() {
@@ -18,16 +19,40 @@ export class Problems extends React.Component {
 			// TODO: error notification
 		})
 	}
+	toggleSolvedVisibleState(e) {
+		this.setState({
+			hide_solved: e.target.checked
+		})
+		console.log('Toggle hide solved');
+		console.log(e.target.checked);
+	}
 	render() {
+		var hide_solved = this.state.hide_solved;
+		var team_status = this.props.query.team_status;
+		var problem_status = {};
+		team_status.forEach((problem) => {
+			problem_status[problem.id] = problem;
+		})
 		var cards = this.state.problems.map(function(problem) {
 			var difficulty = [];
-			// temporary commented out
 			for (var i = 0; i < problem["points"]; i+=100)
 				difficulty.push(<i className="lightning icon" key={i}></i>);
+
+			var solved;
+			if (problem_status[problem["id"]]) {
+				if (problem_status[problem["id"]].points == problem["points"]) {
+					if (hide_solved) {
+						return;
+					}
+					solved = <div><i className="large green checkmark icon"></i>Solved</div>
+				} else {
+					solved = <div>{Math.round(problem_status[problem["id"]].points / problem["points"] * 100)}% Solved</div>
+				}
+			}
 			return (
 				<div className="ui card" key={problem["id"]}>
 					<div className="content">
-						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
+						<Link className="header" to="problem" params={{id: problem["id"]}} query={{team_status: team_status}}>{problem["title"]}</Link>
 						<div className="meta">{problem["category"]["name"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
@@ -37,6 +62,7 @@ export class Problems extends React.Component {
 								Points
 							</div>
 						</div>
+						{solved}
 					</div>
 				    <div className="content extra">
 						Difficulty:
@@ -53,7 +79,7 @@ export class Problems extends React.Component {
 					<div className="ui text menu">
 						<div className="ui item">
 							<div className="ui toggle checkbox">
-								<input type="checkbox" name="public" />
+								<input type="checkbox" name="hide_solved" onChange={this.toggleSolvedVisibleState.bind(this)} />
 								<label>Hide solved problems</label>
 							</div>
 						</div>

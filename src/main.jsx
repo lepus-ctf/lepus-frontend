@@ -1,4 +1,5 @@
 import React from 'react';
+import Api from './api'
 import Router from 'react-router';
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
@@ -12,17 +13,31 @@ export class Main extends React.Component {
 			point: this.props.query.userinfo.points,
 			solved: 0,
 			userinfo: this.props.query.userinfo,
+			teaminfo: {questions: []},
 			update: {
 				problem: 0,
 				announcement: 0
 			}
 		};
+		this.updateTeaminfo();
 	}
 	static willTransitionTo(transition) {
 		//TODO: check logon status
 		var logon = true;
 		if (!logon){
 			transition.redirect('/login');
+		}
+	}
+	updateTeaminfo() {
+		if (!!this.state && !!this.state.userinfo) {
+			Api.team(this.state.userinfo.team, (json) => {
+				this.setState({
+					teaminfo: json
+				});
+				console.log(JSON.stringify(json));
+			}, (err, res) => {
+				console.log("JSON.stringify(json)");
+			})
 		}
 	}
 	componentWillMount() {
@@ -63,7 +78,7 @@ export class Main extends React.Component {
 							</div>
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
-						<Link className="item" to="problems">
+						<Link className="item" to="problems" query={{team_status: this.state.teaminfo.questions}}>
 							{this.state.update.problem > 0 ? <div className="ui small teal label">{this.state.update.problem}</div> : "" }
 							Problems
 						</Link>
