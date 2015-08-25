@@ -24,6 +24,23 @@ export class Api {
 			});
 	}
 
+	signup(username, password, success, failure) {
+		this.agent
+			.post(this.apiEndpoint + '/users.json')
+			.send({username: username, password: password, team_name: username, team_password: password})
+			.end((err, res) => {
+				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
+					console.error(err);
+					console.error(res.message);
+					console.error("Sign-up failed.");
+					failure(err, res);
+				} else {
+					success();
+				}
+			});
+	}
+
 	problems(success, failure) {
 		this.agent
 			.get(this.apiEndpoint + '/questions.json')

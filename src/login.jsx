@@ -7,8 +7,10 @@ export class Login extends React.Component {
 		this.state = {
 			username: "",
 			password: "",
-			pending: false,
-			error: false
+			login_pending: false,
+			signup_pending: false,
+			error: false,
+			success: false
 		};
 	}
 	componentWillMount() {
@@ -24,23 +26,41 @@ export class Login extends React.Component {
 	}
 	tryLogin() {
 		this.setState({
-			pending: true,
-			error: false
+			login_pending: true,
+			error: false,
+			success: false
 		});
 
 		Api.login(this.state.username, this.state.password, (userinfo) => {
 			this.context.router.transitionTo("main", {}, {userinfo: userinfo});
 		}, (err, res) => {
 			this.setState({
-				pending: false,
+				login_pending: false,
 				error: true
 			});
 			React.render(<p>{res.message}</p>, document.querySelector('.ui.error.message'));
 		})
 	}
 	signUp() {
-		// AJAX
-		// Transition
+		this.setState({
+			signup_pending: true,
+			error: false,
+			success: false
+		});
+
+		Api.signup(this.state.username, this.state.password, (userinfo) => {
+			this.setState({
+				signup_pending: false,
+				success: true
+			});
+			React.render(<div><div className="header">New account created</div><p>Press "Login" to start CTF!</p></div>, document.querySelector('.ui.success.message'));
+		}, (err, res) => {
+			this.setState({
+				signup_pending: false,
+				error: true
+			});
+			React.render(<p>{res.message}</p>, document.querySelector('.ui.error.message'));
+		})
 		return true
 	}
 	render() {
@@ -60,7 +80,7 @@ export class Login extends React.Component {
 								Welcome to TDUCTF 2015
 							</div>
 						</h2>
-						<form className={'ui large form' + (this.state.error ? ' error' : '')}>
+						<form className={'ui large form' + (this.state.error ? ' error' : '') + (this.state.success ? ' success' : '')}>
 							<div className="ui">
 								<div className="field">
 									<div className="ui left icon input">
@@ -75,13 +95,14 @@ export class Login extends React.Component {
 									</div>
 								</div>
 								<div className="ui buttons">
-								<input type="button" className={'ui positive button' + (this.state.pending ? ' disabled' : '')} onClick={this.tryLogin.bind(this)} value="Login" />
+								<input type="button" className={'ui positive button' + (this.state.login_pending ? ' disabled' : '')} onClick={this.tryLogin.bind(this)} value="Login" />
 								<div className="or"></div>
-								<input type="button" className="ui button" onClick={this.signUp.bind(this)} value="Sign up" />
+								<input type="button" className={'ui button' + (this.state.signup_pending ? ' disabled' : '')} onClick={this.signUp.bind(this)} value="Sign up" />
 								</div>
-								<div className={'ui inline centered loader' + (this.state.pending ? ' active' : ' disabled ')} ></div>
+								<div className={'ui inline centered loader' + (this.state.signup_pending || this.state.login_pending ? ' active' : ' disabled ')} ></div>
 							</div>
 							<div className="ui error message"></div>
+							<div className="ui success message"></div>
 						</form>
 					</div>
 				</div>
