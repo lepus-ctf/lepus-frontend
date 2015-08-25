@@ -55,6 +55,7 @@ export class Problem extends React.Component {
 			});
 			React.render(<div><div className="header">Failed</div><p>{res.message}</p></div>, document.querySelector('.ui.error.message'));
 		})
+		return false;
 	}
 	saveFile(filename, filepath) {
 		if (this.state.downloading[filename]) {
@@ -129,7 +130,7 @@ export class Problem extends React.Component {
 							</div>
 						</div>
 					</div>
-					<form className={'ui form' + (this.state.error ? ' error' : (this.state.correct ? ' success' : ''))}>
+					<form className={'ui form' + (this.state.error ? ' error' : (this.state.correct ? ' success' : ''))} onSubmit={this.submitFlag.bind(this)}>
 						<div className="ui indicating progress active" data-percent="0">
 							<div className="bar" style={progressStyle} ></div>
 							<div className="label">You got 0 points of {this.state.problem["points"]} points</div>
