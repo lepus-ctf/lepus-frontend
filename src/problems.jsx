@@ -75,6 +75,9 @@ class Problems extends React.Component {
 		})
 		return (
 				<div className="ui container">
+					<div className="ui breadcrumb">
+						<span className="active section">Problems</span>
+					</div>
 					<div className="ui text menu">
 						<div className="ui item">
 							<div className="ui toggle checkbox">
