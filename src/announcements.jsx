@@ -1,20 +1,22 @@
 import React from 'react';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_ANNOUNCEMENTS} from './store'
 global.React = React;
 var md2react = require('md2react');
 
-export class Announcements extends React.Component {
+class Announcements extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			announcements: []
+			updated: null
 		};
 	}
 	componentWillMount() {
 		// Tap tap API server
 		Api.announcements((json) => {
+			this.props.updateAnnouncements(json);
 			this.setState({
-				announcements: json,
 				updated: Date()
 			});
 		}, (err, res) => {
@@ -22,7 +24,8 @@ export class Announcements extends React.Component {
 		})
 	}
 	render() {
-		var announcements = this.state.announcements.map((announcement, index) => {
+		const {announcements} = this.props;
+		var contents = announcements.map((announcement, index) => {
 			return (
 						<div className="event">
 							<div className="label">
@@ -44,12 +47,12 @@ export class Announcements extends React.Component {
 						</div>
 				   );
 		});
-		if (!announcements) announcements = <div>No announcement</div>
+		if (!contents) contents = <div>No announcement</div>
 		return (
 				<div className="ui container">
 					<div>Last updated: <span>{this.state.updated}</span></div>
 					<div className="ui feed segment">
-						{announcements}
+						{contents}
 					</div>
 					<div className="ui divider">
 					</div>
@@ -57,3 +60,10 @@ export class Announcements extends React.Component {
 				);
 	}
 };
+
+export default connect(
+		(state) => ({
+			announcements: state.announcements
+		}),
+		(dispatch) => ({updateAnnouncements: (data) => dispatch({type: UPDATE_ANNOUNCEMENTS, data: data})})
+		)(Announcements);

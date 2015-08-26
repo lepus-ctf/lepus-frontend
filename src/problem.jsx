@@ -1,6 +1,8 @@
 import React from 'react';
 import Router from 'react-router';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_PROBLEMS} from './store'
 global.React = React;
 var md2react = require('md2react');
 var remote = require('remote');
@@ -8,11 +10,10 @@ var dialog = remote.require('dialog');
 var fs = remote.require('fs');
 var Link = Router.Link;
 
-export class Problem extends React.Component {
+class Problem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			problem: {},
 			flagText: "",
 			downloading: {},
 			pending: false,
@@ -22,12 +23,8 @@ export class Problem extends React.Component {
 	}
 	componentWillMount() {
 		// Tap tap API server
-		Api.problem(this.props.params.id, (json) => {
-			this.setState({
-				problem: json
-			});
-			console.log(json);
-
+		Api.problems((json) => {
+			this.props.updateProblems(json);
 		}, (err, res) => {
 			// TODO: error notification
 		})
@@ -94,19 +91,25 @@ export class Problem extends React.Component {
 		}.bind(this));
 	}
 	render() {
-		if (!this.state.problem.title) return (<div></div>);
-		var team_status = this.props.query.team_status;
-		var current_problem_status = {};
-		team_status.forEach((t_state) => {
-			if (this.state.problem.id == t_state.id) {
-				current_problem_status = t_state;
+		const {teaminfo, problems} = this.props;
+		var problem;
+		problems.forEach((id, current) => {
+			if (id == current.id) {
+				problem = current;
+			}
+		}.bind(this, this.props.params.id));
+		if (!problem) return (<div>Can't find a problem.</div>);
+		var problem_status = {};
+		teaminfo.questions.forEach((t_state) => {
+			if (problem.id == t_state.id) {
+				problem_status = t_state;
 			}
 		}.bind(this))
-		var progress = Math.round(~~current_problem_status.points / this.state.problem["points"] * 100);
+		var progress = Math.round(~~problem_status.points / problem["points"] * 100);
 		var progressStyle = {
 			width: progress + "%"
 		};
-		var attachments = this.state.problem["files"].map(function(file) {
+		var attachments = problem["files"].map(function(file) {
 			return (
 					<button className={'ui labeled orange icon button' + (this.state.downloading[file["name"]] ? ' loading' : '')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
 					<i className="file archive outline icon"></i>
@@ -117,21 +120,21 @@ export class Problem extends React.Component {
 		return (
 				<div className="ui container">
 					<div className="ui breadcrumb">
-						<Link className="section" to="problems" query={{team_status: team_status}}>Problems</Link>
+						<Link className="section" to="problems">Problems</Link>
 						<i className="right angle icon divider"></i>
-						<span className="active section">{this.state.problem["title"]}</span>
+						<span className="active section">{problem["title"]}</span>
 					</div>
 					<div className="ui items">
 						<div className="item">
 							<div className="content">
-								<a className="header">{this.state.problem["title"]}</a>
+								<a className="header">{problem["title"]}</a>
 								<div className="meta">
-									<span>{this.state.problem["points"]} points</span>
+									<span>{problem["points"]} points</span>
 								</div>
 								<div className="description">
 											<div className="ui raised segment">
-												<span className="ui top left attached label">{this.state.problem["category"]["name"]}</span>
-												{md2react(this.state.problem["sentence"], {gfm: true, tables: true})}
+												<span className="ui top left attached label">{problem["category"]["name"]}</span>
+												{md2react(problem["sentence"], {gfm: true, tables: true})}
 											</div>
 								</div>
 								<div className="extra">
@@ -143,7 +146,7 @@ export class Problem extends React.Component {
 					<form className={'ui form' + (this.state.error ? ' error' : (this.state.correct ? ' success' : ''))} onSubmit={this.submitFlag.bind(this)}>
 						<div className="ui indicating progress active" data-percent="0">
 							<div className="bar" style={progressStyle} ></div>
-							<div className="label">You got {~~current_problem_status.points} points of {this.state.problem["points"]} points</div>
+							<div className="label">You got {~~problem_status.points} points of {problem["points"]} points</div>
 						</div>
 						<div className="ui right action left icon input">
 							<i className="flag icon"></i>
@@ -159,3 +162,11 @@ export class Problem extends React.Component {
 			   );
 	}
 };
+
+export default connect(
+		(state) => ({
+			teaminfo: state.teamInfo,
+			problems: state.problems
+		}),
+		(dispatch) => ({updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data})})
+		)(Problem);

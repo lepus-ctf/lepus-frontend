@@ -1,11 +1,13 @@
 import React from 'react';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_TEAMLIST} from './store'
 
-export class Ranking extends React.Component {
+class Ranking extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			teams: []
+			updated: null
 		};
 	}
 	componentWillMount() {
@@ -20,8 +22,8 @@ export class Ranking extends React.Component {
 					return 1;
 				return -1;
 			})
+			this.props.updateTeamlist(json);
 			this.setState({
-				teams: json,
 				updated: Date()
 			});
 		}, (err, res) => {
@@ -29,9 +31,10 @@ export class Ranking extends React.Component {
 		})
 	}
 	render() {
-		var teamlist = this.state.teams.map((team, index) => {
+		const {teaminfo, teamlist} = this.props;
+		var ranking = teamlist.map((team, index) => {
 			return (
-							<tr className={this.props.query.teamid == team.id ? 'active' : ''} key={team.id}>
+							<tr className={teaminfo.id == team.id ? 'active' : ''} key={team.id}>
 								<td>{index + 1}</td>
 								<td>{team.name}</td>
 								<td>{team.points}</td>
@@ -50,7 +53,7 @@ export class Ranking extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{teamlist}
+							{ranking}
 						</tbody>
 					</table>
 					<div className="ui divider">
@@ -59,3 +62,11 @@ export class Ranking extends React.Component {
 			   );
 	}
 };
+
+export default connect(
+		(state) => ({
+			teaminfo: state.teamInfo,
+			teamlist: state.teamList
+		}),
+		(dispatch) => ({updateTeamlist: (data) => dispatch({type: UPDATE_TEAMLIST, data: data})})
+		)(Ranking);

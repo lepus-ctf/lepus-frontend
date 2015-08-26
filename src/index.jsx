@@ -1,18 +1,19 @@
 import React from 'react';
 import Router from 'react-router';
-import {Login} from './js/login';
-import {Dashboard} from './js/dashboard';
-import {Problems} from './js/problems';
-import {Problem} from './js/problem';
-import {Ranking} from './js/ranking';
-import {Announcements} from './js/announcements';
-import {Main} from './js/main';
+import {Provider} from 'react-redux';
+import Store from './js/store'
+import Login from './js/login';
+import Dashboard from './js/dashboard';
+import Problems from './js/problems';
+import Problem from './js/problem';
+import Ranking from './js/ranking';
+import Announcements from './js/announcements';
+import Main from './js/main';
 import {Top} from './js/top';
 
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
 
 var routes = (
 		<Route path="/" handler={Top}>
@@ -30,6 +31,10 @@ var routes = (
 		</Route>
 		);
 
-Router.run(routes, (Handler) => {
-	React.render(<Handler />, document.getElementById("content"));
+Router.run(routes, (Handler, routerState) => {
+	React.render((
+			<Provider store={Store}>
+				{() => <Handler routerState={routerState} />}
+			</Provider>
+		), document.getElementById("content"));
 })

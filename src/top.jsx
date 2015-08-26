@@ -5,7 +5,7 @@ var RouteHandler = Router.RouteHandler;
 export class Top extends React.Component {
 	render() {
 		return (
-				<RouteHandler />
+				<RouteHandler routerState={this.props.routerState} />
 			   );
 	}
 };

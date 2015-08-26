@@ -1,20 +1,19 @@
 import React from 'react';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_PROBLEMS} from './store'
 
-export class Problems extends React.Component {
+class Problems extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			problems: [],
 			hide_solved: false
 		};
 	}
 	componentWillMount() {
 		// Tap tap API server
 		Api.problems((json) => {
-			this.setState({
-				problems: json
-			});
+			this.props.updateProblems(json);
 		}, (err, res) => {
 			// TODO: error notification
 		})
@@ -28,12 +27,12 @@ export class Problems extends React.Component {
 	}
 	render() {
 		var hide_solved = this.state.hide_solved;
-		var team_status = this.props.query.team_status;
+		const {teaminfo, problems} = this.props;
 		var problem_status = {};
-		team_status.forEach((problem) => {
+		teaminfo.questions.forEach((problem) => {
 			problem_status[problem.id] = problem;
 		})
-		var cards = this.state.problems.map(function(problem) {
+		var cards = problems.map(function(problem) {
 			var difficulty = [];
 			for (var i = 0; i < problem["points"]; i+=100)
 				difficulty.push(<i className="lightning icon" key={i}></i>);
@@ -52,7 +51,7 @@ export class Problems extends React.Component {
 			return (
 				<div className="ui card" key={problem["id"]}>
 					<div className="content">
-						<Link className="header" to="problem" params={{id: problem["id"]}} query={{team_status: team_status}}>{problem["title"]}</Link>
+						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
 						<div className="meta">{problem["category"]["name"]}</div>
 						<div className="ui mini horizontal statistic">
 							<div className="value">
@@ -100,3 +99,11 @@ export class Problems extends React.Component {
 			   );
 	}
 };
+
+export default connect(
+		(state) => ({
+			teaminfo: state.teamInfo,
+			problems: state.problems
+		}),
+		(dispatch) => ({updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data})})
+		)(Problems);

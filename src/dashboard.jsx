@@ -1,6 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-export class Dashboard extends React.Component {
+class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -40,3 +41,9 @@ export class Dashboard extends React.Component {
 			   );
 	}
 };
+
+export default connect(
+		(state) => ({
+		}),
+		(dispatch) => ({})
+		)(Dashboard);

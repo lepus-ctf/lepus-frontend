@@ -1,19 +1,17 @@
 import React from 'react';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_TEAMINFO} from './store'
 import Router from 'react-router';
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 
-export class Main extends React.Component {
+class Main extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			point: this.props.query.userinfo.points,
-			solved: 0,
-			userinfo: this.props.query.userinfo,
-			teaminfo: {questions: []},
 			update: {
 				problem: 0,
 				announcement: 0
@@ -29,16 +27,10 @@ export class Main extends React.Component {
 		}
 	}
 	updateTeaminfo() {
-		if (!!this.state && !!this.state.userinfo) {
-			Api.team(this.state.userinfo.team, (json) => {
-				this.setState({
-					teaminfo: json
-				});
-				console.log(JSON.stringify(json));
-			}, (err, res) => {
-				console.log("JSON.stringify(json)");
-			})
-		}
+		Api.team(this.props.userinfo.team, (json) => {
+			this.props.updateTeaminfo(json);
+		}, (err, res) => {
+		})
 	}
 	componentWillMount() {
 		document.body.style.backgroundColor = "#1abc9c";
@@ -52,16 +44,17 @@ export class Main extends React.Component {
 			padding: "20px",
 			paddingLeft: "220px",
 		};
+		const {point, solved} = this.props;
 		return (
 				<div className="ui" style={mainStyle}>
-					<RouteHandler />
+					<RouteHandler routerState={this.props.routerState} />
 					<div className="ui left fixed vertical menu inverted">
 						<h1 className="header item">TDUCTF</h1>
 						<div className="item">
 							<div className="ui statistics mini horizontal inverted">
 								<div className="statistic">
 									<div className="value">
-										{this.state.point}
+										{point}
 									</div>
 									<div className="label">
 										Points
@@ -69,7 +62,7 @@ export class Main extends React.Component {
 								</div>
 								<div className="statistic">
 									<div className="value">
-										{this.state.solved}
+										{solved}
 									</div>
 									<div className="label">
 										Solved
@@ -78,11 +71,11 @@ export class Main extends React.Component {
 							</div>
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
-						<Link className="item" to="problems" query={{team_status: this.state.teaminfo.questions}}>
+						<Link className="item" to="problems">
 							{this.state.update.problem > 0 ? <div className="ui small teal label">{this.state.update.problem}</div> : "" }
 							Problems
 						</Link>
-						<Link className="item" to="ranking" query={{teamid: this.state.userinfo.team}}>
+						<Link className="item" to="ranking">
 							Ranking
 						</Link>
 						<Link className="item" to="announcements">
@@ -94,3 +87,12 @@ export class Main extends React.Component {
 			   );
 	}
 };
+
+export default connect(
+		(state) => ({
+			userinfo: state.userInfo,
+			point: state.point,
+			solved: state.solved
+		}),
+		(dispatch) => ({updateTeaminfo: (data) => dispatch({type: UPDATE_TEAMINFO, data: data})})
+		)(Main);

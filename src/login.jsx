@@ -1,7 +1,9 @@
 import React from 'react';
 import Api from './api'
+import {connect} from 'react-redux';
+import {UPDATE_USERINFO} from './store'
 
-export class Login extends React.Component {
+class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -32,7 +34,8 @@ export class Login extends React.Component {
 		});
 
 		Api.login(this.state.username, this.state.password, (userinfo) => {
-			this.context.router.transitionTo("main", {}, {userinfo: userinfo});
+			this.props.saveUserinfo(userinfo);
+			this.context.router.transitionTo("main");
 		}, (err, res) => {
 			this.setState({
 				login_pending: false,
@@ -112,3 +115,8 @@ export class Login extends React.Component {
 Login.contextTypes = {
   router: React.PropTypes.func.isRequired
 };
+
+export default connect(
+		(state) => ({}),
+		(dispatch) => ({saveUserinfo: (data) => dispatch({type: UPDATE_USERINFO, data: data})})
+		)(Login);
