@@ -37,7 +37,16 @@ const dataStore = (state=initialState, action) => {
 			state["problems"] = action.data;
 			return state;
 		case UPDATE_TEAMLIST:
-			state["teamList"] = action.data;
+			const teamlist = action.data.sort((current, next) => {
+				if (current.points < next.points)
+					return 1;
+				if (current.points > next.points)
+					return -1;
+				if (new Date(current.last_score_time) > new Date(next.last_score_time))
+					return 1;
+				return -1;
+			})
+			state["teamList"] = teamlist;
 			for (var i = 0; i < action.data.length; ++i) {
 				if (action.data[i].id == state["userInfo"].team) {
 					state["teamInfo"] = action.data[i];
@@ -46,7 +55,16 @@ const dataStore = (state=initialState, action) => {
 			}
 			return state;
 		case UPDATE_ANNOUNCEMENTS:
-			state["announcements"] = action.data;
+			const announcements = action.data.sort((current, next) => {
+				const day_current = new Date(current["updated_at"]);
+				const day_next = new Date(next["updated_at"]);
+				if (day_current < day_next)
+					return 1;
+				if (day_current > day_next)
+					return -1;
+				return 0;
+			})
+			state["announcements"] = announcements;
 			return state;
 		case UPDATE_SERVEREVENT:
 			switch (action.data.type) {
