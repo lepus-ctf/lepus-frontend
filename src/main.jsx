@@ -73,7 +73,14 @@ class Main extends React.Component {
 				<div className="ui" style={mainStyle}>
 					<RouteHandler routerState={this.props.routerState} />
 					<div className="ui left fixed vertical menu inverted">
-						<h1 className="header item">TDUCTF</h1>
+						<div className="header item">
+							<h1 className="header ui center aligned teal">TDUCTF</h1>
+						</div>
+						<div className="header item">
+							<h2 className="header ui center aligned inverted">
+								4:00:00
+							</h2>
+						</div>
 						<div className="item">
 							<div className="ui statistics mini horizontal inverted">
 								<div className="statistic">
