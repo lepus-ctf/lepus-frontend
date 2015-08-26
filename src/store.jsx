@@ -49,7 +49,13 @@ const dataStore = (state=initialState, action) => {
 			state["teamList"] = teamlist;
 			for (var i = 0; i < action.data.length; ++i) {
 				if (action.data[i].id == state["userInfo"].team) {
+					var solved = 0;
+					action.data[i].questions.forEach((question) => {
+						solved += question.flags;
+					});
 					state["teamInfo"] = action.data[i];
+					state["point"] = action.data[i].points;
+					state["solved"] = solved;
 					break;
 				}
 			}
