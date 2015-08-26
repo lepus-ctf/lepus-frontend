@@ -26,6 +26,7 @@ class Problems extends React.Component {
 		console.log(e.target.checked);
 	}
 	render() {
+		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
 		var hide_solved = this.state.hide_solved;
 		const {teaminfo, problems} = this.props;
 		var problem_status = {};
@@ -49,7 +50,7 @@ class Problems extends React.Component {
 				}
 			}
 			return (
-				<div className="ui card" key={problem["id"]}>
+				<div className={"ui card " + (colors[problem["category"]["id"]] || "black")} key={problem["id"]}>
 					<div className="content">
 						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
 						<div className="meta">{problem["category"]["name"]}</div>
