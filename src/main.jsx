@@ -37,7 +37,18 @@ class Main extends React.Component {
 			console.log("Socket.io connected!")
 		});
 		io.on('event', (data) => {
-			this.props.onReceiveServerEvent(data);
+			switch (data.type) {
+				case "update":
+					this.props.onReceiveServerEvent(data);
+					break;
+				case "answer":
+					if (data.team === this.props.userinfo.team) {
+						this.updateTeaminfo();
+					}
+					break;
+				default:
+					console.log(JSON.stringify(data));
+			}
 			this.setState({
 				render: new Date()
 			});
