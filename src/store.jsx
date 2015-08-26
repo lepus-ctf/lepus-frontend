@@ -6,6 +6,8 @@ export const UPDATE_PROBLEMS = 'updateProblems';
 export const UPDATE_TEAMLIST = 'updateTeamlist';
 export const UPDATE_ANNOUNCEMENTS = 'updateAnnouncements';
 export const UPDATE_SERVEREVENT = 'updateServerEvent';
+export const UPDATE_CTFCONF = 'updateCTFConfigurations';
+export const UPDATE_COUNTDOWN = 'updateCountdown';
 export const RESET_EVENTS = 'resetEvents';
 
 const initialState = {
@@ -18,6 +20,8 @@ const initialState = {
 	solvedTeams: {},
 	teamList: [],
 	announcements: [],
+	config: {},
+	countdown: {},
 	events: {}
 };
 
@@ -95,6 +99,21 @@ const dataStore = (state=initialState, action) => {
 				default:
 					console.log(JSON.stringify(action.data));
 			}
+			return state;
+		case UPDATE_CTFCONF:
+			action.data.forEach((config) => {
+				switch (config.id) {
+					case "start_at":
+						state["config"]["start"] = new Date(config.value);
+						break;
+					case "end_at":
+						state["config"]["end"] = new Date(config.value);
+						break;
+				}
+			});
+			return state;
+		case UPDATE_COUNTDOWN:
+			state["countdown"] = action.data;
 			return state;
 		case RESET_EVENTS:
 			switch (action.data) {

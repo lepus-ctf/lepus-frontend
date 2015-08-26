@@ -54,6 +54,21 @@ export class Api {
 			});
 	}
 
+	configurations(success, failure) {
+		this.superagent
+			.get(this.apiEndpoint + '/configurations.json')
+			.end((err, res) => {
+				if (err) {
+					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
+					console.error(err);
+					failure(err, res);
+				} else {
+					this.agent.saveCookies(res);
+					success(res.body);
+				}
+			});
+	}
+
 	problems(success, failure) {
 		this.superagent
 			.get(this.apiEndpoint + '/questions.json')

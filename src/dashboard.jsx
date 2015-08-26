@@ -14,9 +14,15 @@ class Dashboard extends React.Component {
 		}, (err, res) => {
 			// TODO: error notification
 		})
+		this.timer = setInterval(() => {
+			this.setState({now: new Date()})
+		}.bind(this), 1000);
+	}
+	componentWillUnmount() {
+		clearInterval(this.timer);
 	}
 	render() {
-		const {point, solved, teamlist, ranking} = this.props;
+		const {point, solved, teamlist, ranking, countdown} = this.props;
 		return (
 				<div className="ui container">
 					<h1 className="ui top header blue">Countdown</h1>
@@ -24,7 +30,7 @@ class Dashboard extends React.Component {
 						<div className="ui three statistics">
 							<div className="statistic">
 								<div className="value">
-									4
+									{countdown.h || 'n/a'}
 								</div>
 								<div className="label">
 									Hours
@@ -32,7 +38,7 @@ class Dashboard extends React.Component {
 							</div>
 							<div className="statistic">
 								<div className="value">
-									00
+									{countdown.m || 'n/a'}
 								</div>
 								<div className="label">
 									Minutes
@@ -40,7 +46,7 @@ class Dashboard extends React.Component {
 							</div>
 							<div className="statistic">
 								<div className="value">
-									00
+									{countdown.s || 'n/a'}
 								</div>
 								<div className="label">
 									Seconds
@@ -100,7 +106,10 @@ export default connect(
 			solved: state.solved,
 			point: state.point,
 			teamlist: state.teamList,
-			ranking: state.ranking
+			ranking: state.ranking,
+			start: state.config.start,
+			end: state.config.end,
+			countdown: state.countdown
 		}),
 		(dispatch) => ({updateTeamlist: (data) => dispatch({type: UPDATE_TEAMLIST, data: data})})
 		)(Dashboard);
