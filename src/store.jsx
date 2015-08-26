@@ -39,7 +39,7 @@ const dataStore = (state=initialState, action) => {
 		case UPDATE_TEAMLIST:
 			state["teamList"] = action.data;
 			for (var i = 0; i < action.data.length; ++i) {
-				if (action.data[i] === state["userInfo"].team) {
+				if (action.data[i].id == state["userInfo"].team) {
 					state["teamInfo"] = action.data[i];
 					break;
 				}
