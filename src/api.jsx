@@ -1,12 +1,25 @@
 export class Api {
 	constructor() {
+		this.superagent = require('superagent');
 		this.agent = require('superagent').agent();
 		this.serverUrl = "https://score.sakura.tductf.org";
 		this.apiEndpoint = this.serverUrl + "/api"
 		this.token = "";
+
+		var https = require('https');
+		var _addRequest = https.Agent.prototype.addRequest;
+		var self = this;
+		https.Agent.prototype.addRequest = function() {
+			var args = arguments;
+			var cookies = self.agent.jar.getCookies(args[0]).map((cookie) => cookie.toValueString()).join('; ');;
+			var old = args[0]._headers.cookie;
+			args[0]._headers.cookie = cookies + (old ? '; ' + old : '');
+			args[0]._headerNames['cookie'] = 'Cookie';
+			return _addRequest.apply(this, args);
+		};
 	}
 	login(username, password, success, failure) {
-		this.agent
+		this.superagent
 			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})
 			.end((err, res) => {
@@ -17,15 +30,15 @@ export class Api {
 					console.error("Login failed.");
 					failure(err, res);
 				} else {
-					this.token = res.req.res.headers['set-cookie'].toString().match(/csrftoken=(.*?)(?:$|;)/)[1];
 					this.agent.saveCookies(res);
+					this.token = this.agent.jar.getCookie("csrftoken", res.req).value;
 					success(res.body);
 				}
 			});
 	}
 
 	signup(username, password, success, failure) {
-		this.agent
+		this.superagent
 			.post(this.apiEndpoint + '/users.json')
 			.send({username: username, password: password, team_name: username, team_password: password})
 			.end((err, res) => {
@@ -42,7 +55,7 @@ export class Api {
 	}
 
 	problems(success, failure) {
-		this.agent
+		this.superagent
 			.get(this.apiEndpoint + '/questions.json')
 			.query({include: '1'})
 			.end((err, res) => {
@@ -58,7 +71,7 @@ export class Api {
 	}
 
 	problem(id, success, failure) {
-		this.agent
+		this.superagent
 			.get(this.apiEndpoint + '/questions/' + id + '.json')
 			.query({include: '1'})
 			.end((err, res) => {
@@ -74,7 +87,7 @@ export class Api {
 	}
 
 	announcements(success, failure) {
-		this.agent
+		this.superagent
 			.get(this.apiEndpoint + '/notices.json')
 			.end((err, res) => {
 				if (err) {
@@ -89,7 +102,7 @@ export class Api {
 	}
 
 	submitFlag(id, flag, success, failure) {
-		this.agent
+		this.superagent
 			.post(this.apiEndpoint + '/answers.json')
 			.set('X-CSRFToken', this.token)
 			.send({question: id, answer: flag})
@@ -110,7 +123,7 @@ export class Api {
 	}
 
 	teamlist(success, failure) {
-		this.agent
+		this.superagent
 			.get(this.apiEndpoint + '/teams.json')
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
@@ -125,7 +138,7 @@ export class Api {
 	}
 
 	team(id, success, failure) {
-		this.agent
+		this.superagent
 			.get(this.apiEndpoint + '/teams/' + id + '.json')
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
@@ -140,7 +153,7 @@ export class Api {
 	}
 
 	downloadFile(filepath, success, failure) {
-		this.agent
+		this.superagent
 			.get(this.serverUrl + filepath)
 			.end((err, res) => {
 				if (err) {
