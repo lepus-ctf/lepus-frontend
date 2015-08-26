@@ -33,7 +33,7 @@ class Problems extends React.Component {
 		teaminfo.questions.forEach((problem) => {
 			problem_status[problem.id] = problem;
 		})
-		var cards = problems.map(function(problem) {
+		var cards = problems.map((problem) => {
 			var difficulty = [];
 			for (var i = 0; i < problem["points"]; i+=100)
 				difficulty.push(<i className="lightning icon" key={i}></i>);

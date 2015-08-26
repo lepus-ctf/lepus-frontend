@@ -16,7 +16,7 @@ const initialState = {
 	announcements: []
 };
 
-function dataStore(state=initialState, action) {
+const dataStore = (state=initialState, action) => {
 	switch(action.type){
 		case UPDATE_USERINFO:
 			state["userInfo"] = action.data;

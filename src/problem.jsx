@@ -61,7 +61,7 @@ class Problem extends React.Component {
 			return;
 		}
 		console.log("File saving");
-		dialog.showSaveDialog({ defaultPath: filename}, function(savepath) {
+		dialog.showSaveDialog({ defaultPath: filename}, (savepath) => {
 			if (savepath === undefined) {
 				console.log("File saving canceld");
 				return;
@@ -69,11 +69,11 @@ class Problem extends React.Component {
 			var downloadState = this.state.downloading;
 			downloadState[filename] = true;
 			this.setState({downloading: downloadState});
-			Api.downloadFile(filepath, function(blob) {
+			Api.downloadFile(filepath, (blob) => {
 				var downloadState = this.state.downloading;
 				delete downloadState[filename];
 				this.setState({downloading: downloadState});
-				fs.writeFile(savepath, blob, function (err) {
+				fs.writeFile(savepath, blob, (err) => {
 					if (err) {
 						// TODO: Show error notification
 						console.error("File saving error");
@@ -81,7 +81,7 @@ class Problem extends React.Component {
 						console.log("File saving done");
 					}
 				});
-			}.bind(this), function() {
+			}.bind(this), () => {
 				// TODO: Show error notification
 				console.error("File download error");
 				var downloadState = this.state.downloading;
@@ -109,7 +109,7 @@ class Problem extends React.Component {
 		var progressStyle = {
 			width: progress + "%"
 		};
-		var attachments = problem["files"].map(function(file) {
+		var attachments = problem["files"].map((file) => {
 			return (
 					<button className={'ui labeled orange icon button' + (this.state.downloading[file["name"]] ? ' loading' : '')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
 					<i className="file archive outline icon"></i>
