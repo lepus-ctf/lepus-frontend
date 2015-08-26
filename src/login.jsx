@@ -35,7 +35,7 @@ class Login extends React.Component {
 
 		Api.login(this.state.username, this.state.password, (userinfo) => {
 			this.props.saveUserinfo(userinfo);
-			this.context.router.transitionTo("main");
+			this.context.router.transitionTo("dashboard");
 		}, (err, res) => {
 			this.setState({
 				login_pending: false,

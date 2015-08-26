@@ -11,6 +11,7 @@ export const RESET_EVENTS = 'resetEvents';
 const initialState = {
 	point: 0,
 	solved: 0,
+	ranking: 0,
 	userInfo: {},
 	teamInfo: {},
 	problems: [],
@@ -49,7 +50,7 @@ const dataStore = (state=initialState, action) => {
 			})
 			state["teamList"] = teamlist;
 			state["solvedTeams"] = {};
-			action.data.forEach((team) => {
+			teamlist.forEach((team, index) => {
 				if (team.id == state["userInfo"].team) {
 					var solved = 0;
 					team.questions.forEach((question) => {
@@ -58,6 +59,7 @@ const dataStore = (state=initialState, action) => {
 					state["teamInfo"] = team;
 					state["point"] = team.points;
 					state["solved"] = solved;
+					state["ranking"] = index + 1;
 				}
 				team.questions.forEach((question) => {
 					state["solvedTeams"][question.id] = ~~state["solvedTeams"][question.id] + 1;

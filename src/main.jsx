@@ -11,7 +11,6 @@ var RouteHandler = Router.RouteHandler;
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
-		this.updateTeaminfo();
 		this.watchServerEvent();
 	}
 	static willTransitionTo(transition) {
