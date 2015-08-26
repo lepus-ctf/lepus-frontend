@@ -48,9 +48,11 @@ class Problems extends React.Component {
 		var hide_solved = this.state.hide_solved;
 		const {teaminfo, solvedTeams, problems} = this.props;
 		var problem_status = {};
-		teaminfo.questions.forEach((problem) => {
-			problem_status[problem.id] = problem;
-		})
+		if (teaminfo.questions) {
+			teaminfo.questions.forEach((problem) => {
+				problem_status[problem.id] = problem;
+			})
+		}
 		var category = this.state.category;
 		var categories = {};
 		var cards = problems.map((problem) => {
