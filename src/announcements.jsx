@@ -27,7 +27,7 @@ class Announcements extends React.Component {
 		const {announcements} = this.props;
 		var contents = announcements.map((announcement, index) => {
 			return (
-						<div className="event">
+						<div className="event" key={announcement.id}>
 							<div className="label">
 								<i className="icon announcement"></i>
 							</div>
