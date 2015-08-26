@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS} from './store'
+import {UPDATE_PROBLEMS, RESET_EVENTS} from './store'
 
 class Problems extends React.Component {
 	constructor(props) {
@@ -17,6 +17,7 @@ class Problems extends React.Component {
 		}, (err, res) => {
 			// TODO: error notification
 		})
+		this.props.resetEvents();
 	}
 	toggleSolvedVisibleState(e) {
 		this.setState({
@@ -109,5 +110,8 @@ export default connect(
 			teaminfo: state.teamInfo,
 			problems: state.problems
 		}),
-		(dispatch) => ({updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data})})
+		(dispatch) => ({
+			updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data}),
+			resetEvents: () => dispatch({type: RESET_EVENTS, data: "problems"})
+		})
 		)(Problems);

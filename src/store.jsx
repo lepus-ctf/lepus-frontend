@@ -5,6 +5,8 @@ export const UPDATE_TEAMINFO = 'updateTeaminfo';
 export const UPDATE_PROBLEMS = 'updateProblems';
 export const UPDATE_TEAMLIST = 'updateTeamlist';
 export const UPDATE_ANNOUNCEMENTS = 'updateAnnouncements';
+export const UPDATE_SERVEREVENT = 'updateServerEvent';
+export const RESET_EVENTS = 'resetEvents';
 
 const initialState = {
 	point: 0,
@@ -13,7 +15,8 @@ const initialState = {
 	teamInfo: {},
 	problems: [],
 	teamList: [],
-	announcements: []
+	announcements: [],
+	events: {}
 };
 
 const dataStore = (state=initialState, action) => {
@@ -45,7 +48,38 @@ const dataStore = (state=initialState, action) => {
 		case UPDATE_ANNOUNCEMENTS:
 			state["announcements"] = action.data;
 			return state;
+		case UPDATE_SERVEREVENT:
+			switch (action.data.type) {
+				case "update":
+					switch (action.data.model) {
+						case "notice":
+							state["events"]["announcements"] = ~~state["events"]["announcements"] + 1;
+							break;
+						case "question":
+							state["events"]["problems"] = ~~state["events"]["problems"] + 1;
+							break;
+						default:
+							console.log(JSON.stringify(action.data));
+					}
+					break;
+				default:
+					console.log(JSON.stringify(action.data));
+			}
+			return state;
+		case RESET_EVENTS:
+			switch (action.data) {
+				case "problems":
+					state["events"]["problems"] = 0;
+					break;
+				case "announcements":
+					state["events"]["announcements"] = 0;
+					break;
+				default:
+					console.log(JSON.stringify(action.data));
+			}
+			return state;
 		default:
+			console.log(JSON.stringify(action));
 			return state;
 	}
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_TEAMINFO} from './store'
+import {UPDATE_TEAMINFO, UPDATE_SERVEREVENT} from './store'
 import Router from 'react-router';
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
@@ -11,13 +11,8 @@ var RouteHandler = Router.RouteHandler;
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			update: {
-				problem: 0,
-				announcement: 0
-			}
-		};
 		this.updateTeaminfo();
+		this.watchServerEvent();
 	}
 	static willTransitionTo(transition) {
 		//TODO: check logon status
@@ -32,6 +27,25 @@ class Main extends React.Component {
 		}, (err, res) => {
 		})
 	}
+	watchServerEvent() {
+		var socket = require('socket.io-client');
+		var io = socket('https://score.sakura.tductf.org/', {
+				secure: true,
+				transports: ["websocket"]
+				});
+		io.on('connect', () => {
+			console.log("Socket.io connected!")
+		});
+		io.on('event', (data) => {
+			this.props.onReceiveServerEvent(data);
+			this.setState({
+				render: new Date()
+			});
+		}.bind(this));
+		io.on('disconnect', () => {
+			console.warn("Socket.io disconnected.");
+		});
+	}
 	componentWillMount() {
 		document.body.style.backgroundColor = "#1abc9c";
 	}
@@ -44,7 +58,7 @@ class Main extends React.Component {
 			padding: "20px",
 			paddingLeft: "220px",
 		};
-		const {point, solved} = this.props;
+		const {point, solved, events} = this.props;
 		return (
 				<div className="ui" style={mainStyle}>
 					<RouteHandler routerState={this.props.routerState} />
@@ -72,14 +86,14 @@ class Main extends React.Component {
 						</div>
 						<Link className="item" to="dashboard">Dashboard</Link>
 						<Link className="item" to="problems">
-							{this.state.update.problem > 0 ? <div className="ui small teal label">{this.state.update.problem}</div> : "" }
+							{events.problems > 0 ? <div className="ui small teal label">{events.problems}</div> : "" }
 							Problems
 						</Link>
 						<Link className="item" to="ranking">
 							Ranking
 						</Link>
 						<Link className="item" to="announcements">
-							{this.state.update.announcement > 0 ? <div className="ui small red label">{this.state.update.announcement}</div> : "" }
+							{events.announcements > 0 ? <div className="ui small red label">{events.announcements}</div> : "" }
 							Announcements
 						</Link>
 					</div>
@@ -92,7 +106,11 @@ export default connect(
 		(state) => ({
 			userinfo: state.userInfo,
 			point: state.point,
-			solved: state.solved
+			solved: state.solved,
+			events: state.events
 		}),
-		(dispatch) => ({updateTeaminfo: (data) => dispatch({type: UPDATE_TEAMINFO, data: data})})
+		(dispatch) => ({
+			updateTeaminfo: (data) => dispatch({type: UPDATE_TEAMINFO, data: data}),
+			onReceiveServerEvent: (data) => dispatch({type: UPDATE_SERVEREVENT, data: data}),
+		})
 		)(Main);

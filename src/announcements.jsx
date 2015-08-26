@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_ANNOUNCEMENTS} from './store'
+import {UPDATE_ANNOUNCEMENTS, RESET_EVENTS} from './store'
 global.React = React;
 var md2react = require('md2react');
 
@@ -22,6 +22,7 @@ class Announcements extends React.Component {
 		}, (err, res) => {
 			// TODO: error notification
 		})
+		this.props.resetEvents();
 	}
 	render() {
 		const {announcements} = this.props;
@@ -65,5 +66,8 @@ export default connect(
 		(state) => ({
 			announcements: state.announcements
 		}),
-		(dispatch) => ({updateAnnouncements: (data) => dispatch({type: UPDATE_ANNOUNCEMENTS, data: data})})
+		(dispatch) => ({
+			updateAnnouncements: (data) => dispatch({type: UPDATE_ANNOUNCEMENTS, data: data}),
+			resetEvents: () => dispatch({type: RESET_EVENTS, data: "announcements"})
+		})
 		)(Announcements);
