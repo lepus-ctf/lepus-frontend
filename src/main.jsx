@@ -11,6 +11,7 @@ var RouteHandler = Router.RouteHandler;
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {url: ""};
 		this.watchServerEvent();
 	}
 	static willTransitionTo(transition) {
@@ -45,6 +46,9 @@ class Main extends React.Component {
 						this.updateTeaminfo();
 					}
 					break;
+				case "youtube":
+					this.setState({url: "http://www.youtube.com/embed/" + data["video_id"] + "?autoplay=1"});
+					break;
 				default:
 					console.log(JSON.stringify(data));
 			}
@@ -68,7 +72,26 @@ class Main extends React.Component {
 			padding: "20px",
 			paddingLeft: "220px",
 		};
+		var maxSize = {
+			height: "100%",
+			width: "100%",
+		};
+		var centeredModal = {
+			height: "70%",
+			marginTop: "-20%",
+		}
 		const {point, solved, events} = this.props;
+		var modal;
+		if (this.state.url) {
+			modal = (
+					<div className="ui dimmer modals page transition visible active">
+						<div className="ui small basic test modal transition visible active" style={centeredModal}>
+							<i className="icon close" onClick={this.setState.bind(this, {url: null})}></i>
+							<iframe src={this.state.url} frameBorder="0" style={maxSize}/>
+						</div>
+					</div>
+					);
+		}
 		return (
 				<div className="ui" style={mainStyle}>
 					<RouteHandler routerState={this.props.routerState} />
@@ -114,6 +137,7 @@ class Main extends React.Component {
 							Announcements
 						</Link>
 					</div>
+					{modal}
 				</div>
 			   );
 	}
