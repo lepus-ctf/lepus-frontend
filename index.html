@@ -4,6 +4,34 @@
 		<meta charset="UTF-8">
 		<title>TDUCTF 2015</title>
 		<link rel="stylesheet" href="./semantic/dist/semantic.min.css" type="text/css" />
+		<style>
+			@font-face
+			{
+				font-family: mplus-2m-regular;
+				src: url('font/mplus-2m-regular.ttf')
+				format("truetype");
+			}
+			@font-face
+			{
+				font-family: mplus-2p-regular;
+				src: url('font/mplus-2p-regular.ttf')
+				format("truetype");
+			}
+			* {
+				font-family: mplus-2p-regular;
+			}
+			code {
+				font-family: mplus-2m-regular;
+			}
+			canvas {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				z-index: -1;
+			}
+		</style>
 	</head>
 	<body id="content" style="background-color: #000;">
 	</body>
@@ -76,14 +104,4 @@
 				}
 		);
 	</script>
-	<style>
-		canvas {
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			z-index: -1;
-		}
-	</style>
 </html>
