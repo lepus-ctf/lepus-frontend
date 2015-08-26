@@ -29,7 +29,7 @@ class Problems extends React.Component {
 	render() {
 		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
 		var hide_solved = this.state.hide_solved;
-		const {teaminfo, problems} = this.props;
+		const {teaminfo, solvedTeams, problems} = this.props;
 		var problem_status = {};
 		teaminfo.questions.forEach((problem) => {
 			problem_status[problem.id] = problem;
@@ -68,6 +68,10 @@ class Problems extends React.Component {
 				    <div className="content extra">
 						Difficulty:
 							{difficulty}
+					</div>
+				    <div className="content extra">
+						<i className="users icon"></i>
+						{~~solvedTeams[problem.id]} teams solved
 					</div>
 					<div className="ui bottom attached rogress" data-percent="60">
 						<div className="bar"></div>
@@ -108,6 +112,7 @@ class Problems extends React.Component {
 export default connect(
 		(state) => ({
 			teaminfo: state.teamInfo,
+			solvedTeams: state.solvedTeams,
 			problems: state.problems
 		}),
 		(dispatch) => ({

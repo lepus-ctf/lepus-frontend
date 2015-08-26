@@ -14,6 +14,7 @@ const initialState = {
 	userInfo: {},
 	teamInfo: {},
 	problems: [],
+	solvedTeams: {},
 	teamList: [],
 	announcements: [],
 	events: {}
@@ -47,18 +48,21 @@ const dataStore = (state=initialState, action) => {
 				return -1;
 			})
 			state["teamList"] = teamlist;
-			for (var i = 0; i < action.data.length; ++i) {
-				if (action.data[i].id == state["userInfo"].team) {
+			state["solvedTeams"] = {};
+			action.data.forEach((team) => {
+				if (team.id == state["userInfo"].team) {
 					var solved = 0;
-					action.data[i].questions.forEach((question) => {
+					team.questions.forEach((question) => {
 						solved += question.flags;
 					});
-					state["teamInfo"] = action.data[i];
-					state["point"] = action.data[i].points;
+					state["teamInfo"] = team;
+					state["point"] = team.points;
 					state["solved"] = solved;
-					break;
 				}
-			}
+				team.questions.forEach((question) => {
+					state["solvedTeams"][question.id] = ~~state["solvedTeams"][question.id] + 1;
+				});
+			});
 			return state;
 		case UPDATE_ANNOUNCEMENTS:
 			const announcements = action.data.sort((current, next) => {
