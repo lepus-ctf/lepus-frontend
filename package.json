@@ -7,7 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "gulp compile",
     "start": "electron .",
-    "packager": "electron-packager . TDUCTF-2015 --all --version=0.30.5 --ignore=node_modules/gulp*",
+    "package:darwin": "gulp package:darwin",
+    "package:linux:x64": "gulp package:linux:x64",
+    "package:linux:ia32": "gulp package:linux:ia32",
+    "package:win:x64": "gulp package:win:x64",
+    "package:win:ia32": "gulp package:win:ia32",
+    "package:all": "gulp package:all",
     "postinstall": "node font_donwloader.js && cd semantic && gulp build"
   },
   "repository": {
