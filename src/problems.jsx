@@ -1,15 +1,13 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS, RESET_EVENTS} from './store'
+import {UPDATE_PROBLEMS, RESET_EVENTS, SET_VISIBLE_CATEGORY, SET_HIDDEN_SOLVED} from './store'
 
 class Problems extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hide_solved: false,
-			searchBoxFocused: false,
-			category: -1
+			searchBoxFocused: false
 		};
 	}
 	componentWillMount() {
@@ -22,9 +20,7 @@ class Problems extends React.Component {
 		this.props.resetEvents();
 	}
 	toggleSolvedVisibleState(e) {
-		this.setState({
-			hide_solved: e.target.checked
-		})
+		this.props.hideSolved(e.target.checked);
 	}
 	onSearchBoxFocus(e) {
 		this.setState({
@@ -32,28 +28,27 @@ class Problems extends React.Component {
 		})
 	}
 	onCategoryClick(e) {
+		this.props.setVisibleCategory(e.target.getAttribute("data-id"));
 		this.setState({
-			category: e.target.getAttribute("data-id"),
 			searchBoxFocused: false
 		})
+
 	}
 	clearCatrgory() {
+		this.props.setVisibleCategory(-1);
 		this.setState({
-			category: -1,
 			searchBoxFocused: false
 		})
 	}
 	render() {
 		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
-		var hide_solved = this.state.hide_solved;
-		const {teaminfo, solvedTeams, problems} = this.props;
+		const {teaminfo, solvedTeams, problems, hiddenSolved, visibleCategory} = this.props;
 		var problem_status = {};
 		if (teaminfo.questions) {
 			teaminfo.questions.forEach((problem) => {
 				problem_status[problem.id] = problem;
 			})
 		}
-		var category = this.state.category;
 		var categories = {};
 		var cards = problems.map((problem) => {
 			var difficulty = [];
@@ -61,13 +56,13 @@ class Problems extends React.Component {
 				difficulty.push(<i className="lightning icon" key={i}></i>);
 
 			categories[problem["category"]["name"]] = problem["category"]["id"];
-			if (category != null && category >= 0 && category != problem["category"]["id"]) {
+			if (visibleCategory >= 0 && visibleCategory != problem["category"]["id"]) {
 				return
 			}
 			var solved;
 			if (problem_status[problem["id"]]) {
 				if (problem_status[problem["id"]].points == problem["points"]) {
-					if (hide_solved) {
+					if (hiddenSolved) {
 						return;
 					}
 					solved = <div><i className="large green checkmark icon"></i>Solved</div>
@@ -120,7 +115,7 @@ class Problems extends React.Component {
 						</div>
 					</div>
 					);
-			if (category != null && category >= 0 && category == categories[key]) {
+			if (visibleCategory == categories[key]) {
 				categoryName = "Category: " + key;
 			}
 		}
@@ -132,7 +127,7 @@ class Problems extends React.Component {
 					<div className="ui text menu">
 						<div className="ui item">
 							<div className="ui toggle checkbox">
-								<input type="checkbox" name="hide_solved" onChange={this.toggleSolvedVisibleState.bind(this)} />
+								<input type="checkbox" name="hide_solved" onChange={this.toggleSolvedVisibleState.bind(this)} checked={hiddenSolved}/>
 								<label>Hide solved problems</label>
 							</div>
 						</div>
@@ -164,10 +159,14 @@ export default connect(
 		(state) => ({
 			teaminfo: state.teamInfo,
 			solvedTeams: state.solvedTeams,
-			problems: state.problems
+			problems: state.problems,
+			visibleCategory: state.visibleCategory,
+			hiddenSolved: state.hiddenSolved
 		}),
 		(dispatch) => ({
 			updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data}),
-			resetEvents: () => dispatch({type: RESET_EVENTS, data: "problems"})
+			resetEvents: () => dispatch({type: RESET_EVENTS, data: "problems"}),
+			setVisibleCategory: (data) => dispatch({type: SET_VISIBLE_CATEGORY, data: data}),
+			hideSolved: (data) => dispatch({type: SET_HIDDEN_SOLVED, data: data}),
 		})
 		)(Problems);

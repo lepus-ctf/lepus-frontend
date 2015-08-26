@@ -8,12 +8,16 @@ export const UPDATE_ANNOUNCEMENTS = 'updateAnnouncements';
 export const UPDATE_SERVEREVENT = 'updateServerEvent';
 export const UPDATE_CTFCONF = 'updateCTFConfigurations';
 export const UPDATE_COUNTDOWN = 'updateCountdown';
+export const SET_VISIBLE_CATEGORY = 'setVisibleCategory';
+export const SET_HIDDEN_SOLVED = 'setHiddenSolved';
 export const RESET_EVENTS = 'resetEvents';
 
 const initialState = {
 	point: 0,
 	solved: 0,
 	ranking: 0,
+	hiddenSolved: false,
+	visibleCategory: -1,
 	userInfo: {},
 	teamInfo: {},
 	problems: [],
@@ -114,6 +118,12 @@ const dataStore = (state=initialState, action) => {
 			return state;
 		case UPDATE_COUNTDOWN:
 			state["countdown"] = action.data;
+			return state;
+		case SET_VISIBLE_CATEGORY:
+			state["visibleCategory"] = action.data;
+			return state;
+		case SET_HIDDEN_SOLVED:
+			state["hiddenSolved"] = action.data;
 			return state;
 		case RESET_EVENTS:
 			switch (action.data) {
