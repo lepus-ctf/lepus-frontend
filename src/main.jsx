@@ -11,7 +11,7 @@ var RouteHandler = Router.RouteHandler;
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {url: ""};
+		this.state = {url: "", breakingnews: true, playOnce: false};
 		this.watchServerEvent();
 	}
 	static willTransitionTo(transition) {
@@ -48,6 +48,14 @@ class Main extends React.Component {
 					break;
 				case "youtube":
 					this.setState({url: "http://www.youtube.com/embed/" + data["video_id"] + "?autoplay=1"});
+					if (!this.state.breakingnews) {
+						var n = new Notification('TDUCTF 2015', {
+							body: 'Breaking news!'
+						});
+						n.onclick = () => {
+							this.setState({playOnce: true});
+						};
+					}
 					break;
 				default:
 					console.log(JSON.stringify(data));
@@ -66,6 +74,12 @@ class Main extends React.Component {
 	componentWillUnmount() {
 		document.body.style.backgroundColor = null;
 	}
+	unsetBreakingnews() {
+		this.setState({url: null, breakingnews: false})
+	}
+	closeBreakingnewsModal() {
+		this.setState({url: null, playOnce: false})
+	}
 	render() {
 		var mainStyle = {
 			height: "100%",
@@ -82,12 +96,17 @@ class Main extends React.Component {
 		}
 		const {point, solved, events} = this.props;
 		var modal;
-		if (this.state.url) {
+		if (this.state.url && (this.state.breakingnews || this.state.playOnce)) {
 			modal = (
 					<div className="ui dimmer modals page transition visible active">
 						<div className="ui small basic test modal transition visible active" style={centeredModal}>
-							<i className="icon close" onClick={this.setState.bind(this, {url: null})}></i>
+							<i className="icon close" onClick={this.closeBreakingnewsModal.bind(this)}></i>
 							<iframe src={this.state.url} frameBorder="0" style={maxSize}/>
+							<div className="ui container">
+								<div className="ui checkbox" onClick={this.unsetBreakingnews.bind(this)}>
+									<div className="ui grey tiny header">I'll not watch BREAKING NEWS any more.</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					);
