@@ -7,7 +7,9 @@ class Problems extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hide_solved: false
+			hide_solved: false,
+			searchBoxFocused: false,
+			category: -1
 		};
 	}
 	componentWillMount() {
@@ -23,8 +25,23 @@ class Problems extends React.Component {
 		this.setState({
 			hide_solved: e.target.checked
 		})
-		console.log('Toggle hide solved');
-		console.log(e.target.checked);
+	}
+	onSearchBoxFocus(e) {
+		this.setState({
+			searchBoxFocused: true
+		})
+	}
+	onCategoryClick(e) {
+		this.setState({
+			category: e.target.getAttribute("data-id"),
+			searchBoxFocused: false
+		})
+	}
+	clearCatrgory() {
+		this.setState({
+			category: -1,
+			searchBoxFocused: false
+		})
 	}
 	render() {
 		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
@@ -34,11 +51,17 @@ class Problems extends React.Component {
 		teaminfo.questions.forEach((problem) => {
 			problem_status[problem.id] = problem;
 		})
+		var category = this.state.category;
+		var categories = {};
 		var cards = problems.map((problem) => {
 			var difficulty = [];
 			for (var i = 0; i < problem["points"]; i+=100)
 				difficulty.push(<i className="lightning icon" key={i}></i>);
 
+			categories[problem["category"]["name"]] = problem["category"]["id"];
+			if (category != null && category >= 0 && category != problem["category"]["id"]) {
+				return
+			}
 			var solved;
 			if (problem_status[problem["id"]]) {
 				if (problem_status[problem["id"]].points == problem["points"]) {
@@ -79,6 +102,26 @@ class Problems extends React.Component {
 				</div>
 				);
 		})
+		var categoryName = "";
+		var categoryList = [
+					<div className="result" key="-1" data-id="-1" onClick={this.onCategoryClick.bind(this)}>
+						<div className="content" data-id="-1">
+							<div className="title" data-id="-1">All</div>
+						</div>
+					</div>
+			];
+		for (var key in categories) {
+			categoryList.push(
+					<div className="result" key={categories[key]} data-id={categories[key]} onClick={this.onCategoryClick.bind(this)}>
+						<div className="content" data-id={categories[key]}>
+							<div className="title" data-id={categories[key]}>{key}</div>
+						</div>
+					</div>
+					);
+			if (category != null && category >= 0 && category == categories[key]) {
+				categoryName = "Category: " + key;
+			}
+		}
 		return (
 				<div className="ui container">
 					<div className="ui breadcrumb">
@@ -91,12 +134,18 @@ class Problems extends React.Component {
 								<label>Hide solved problems</label>
 							</div>
 						</div>
-						<div className="ui right category search item">
+						<div className="ui right aligned category search item">
 							<div className="ui transparent icon input">
-								<input className="prompt" type="text" placeholder="Search problems..." />
-								<i className="search link icon"></i>
+								<input className="prompt" type="text" placeholder="Search problems..." onFocus={this.onSearchBoxFocus.bind(this)} value={categoryName}/>
+								<i className={!categoryName ? "search link icon" : "close icon link"} onClick={this.clearCatrgory.bind(this)}></i>
 							</div>
 							<div className="results"></div>
+							<div className={"results transition" + (this.state.searchBoxFocused ? " visible" : "")} >
+								<div className="category">
+									<div className="name">Category</div>
+									{categoryList}
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className="ui three cards">
