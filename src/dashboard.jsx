@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
 							</div>
 						</div>
 					</div>
-					<h1 className="ui top header purple">Statisitcs</h1>
+					<h1 className="ui top header purple">Statistics</h1>
 					<div className="ui three column grid center aligned">
 						<div className="column">
 							<div className="ui segment red">
