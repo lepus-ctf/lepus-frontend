@@ -89,7 +89,6 @@ export class Api {
 	}
 
 	submitFlag(id, flag, success, failure) {
-		console.log(flag)
 		this.agent
 			.post(this.apiEndpoint + '/answers.json')
 			.set('X-CSRFToken', this.token)
@@ -102,9 +101,6 @@ export class Api {
 				} else if (res.body.is_correct) {
 					this.agent.saveCookies(res);
 					success();
-					console.error(err);
-					console.error((res && res.body) ? res.body.answer : res);
-					failure(err, res);
 				} else {
 					console.error(err);
 					console.error(res);
