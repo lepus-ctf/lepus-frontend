@@ -7,6 +7,7 @@ global.React = React;
 var md2react = require('md2react');
 var remote = require('remote');
 var dialog = remote.require('dialog');
+var clipboard = remote.require('clipboard');
 var fs = remote.require('fs');
 var Link = Router.Link;
 
@@ -14,6 +15,7 @@ class Problem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			copiedLink: "",
 			flagText: "",
 			downloading: {},
 			pending: false,
@@ -98,6 +100,17 @@ class Problem extends React.Component {
 			error: null
 		});
 	}
+	copyDownloadLink(name, path) {
+		clipboard.writeText(Api.serverUrl + path);
+		this.setState({
+			copiedLink: name
+		});
+		setTimeout(function() {
+			this.setState({
+				copiedLink: ""
+			});
+		}.bind(this), 3000);
+	}
 	render() {
 		const {teaminfo, problems} = this.props;
 		var problem;
@@ -119,10 +132,18 @@ class Problem extends React.Component {
 		};
 		var attachments = problem["files"].map((file) => {
 			return (
-					<button className={'ui labeled orange icon button' + (this.state.downloading[file["name"]] ? ' loading' : '')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
-					<i className="file archive outline icon"></i>
-					{file["name"]}
-					</button>
+				<div>
+					<div className="ui buttons">
+						<button className={'ui labeled icon button' + (this.state.downloading[file["name"]] ? ' loading' : '') + (this.state.copiedLink == file.name ? ' olive' : ' orange')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
+							<i className="file archive outline icon"></i>
+							{this.state.copiedLink == file.name ? "Link copied!" : file["name"]}
+						</button>
+						<button className="ui icon button olive"  data-id={file["id"]} onClick={this.copyDownloadLink.bind(this, file["name"], file["url"])}>
+							<i className="file linkify icon"></i>
+						</button>
+					</div>
+					<div className="ui pointing left label">{file["size"]} bytes</div>
+				</div>
 				   );
 		}.bind(this));
 		var errorMessage;
