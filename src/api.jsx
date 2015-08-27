@@ -165,7 +165,13 @@ export class Api {
 					failure(error);
 				} else {
 					this.agent.saveCookies(res);
-					success(res.body);
+					var data = [];
+					res.on('data', function(chunk){
+						data.push(chunk);
+					});
+					res.on('end', function () {
+						success(Buffer.concat(data));
+					});
 				}
 			});
 	}
