@@ -81,10 +81,12 @@ gulp.task('package:win:x64', ['compile'], function (done) {
 	});
 });
 
-gulp.task('package:all', ['compile'], function (done) {
-	var option = commonOption;
-	packager(option, function (err, path) {
-		done();
-	});
+gulp.task('package:all', [
+		'package:darwin',
+		'package:linux:ia32',
+		'package:linux:x64',
+		'package:win:ia32',
+		'package:win:x64'], function (done) {
+	done();
 });
 
