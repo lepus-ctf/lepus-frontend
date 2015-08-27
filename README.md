@@ -19,7 +19,7 @@ $ npm start
 
 ### Packaging
 ```
-$ npm run packager
+$ npm run package:all
 ```
 
 
