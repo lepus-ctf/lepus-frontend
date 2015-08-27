@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "TDUCTF front-end application",
   "main": "app.js",
+  "desktopName": "tductf.desktop",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "gulp compile",
