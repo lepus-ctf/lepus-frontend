@@ -34,7 +34,7 @@ var routes = (
 
 // Patch for Electron on OS X Copy/Paste bug
 function CopyPasteFunc(e){
-	if (e.ctrlKey != e.metaKey && e.altKey && !e.shiftKey) {
+	if (e.ctrlKey != e.metaKey && !e.altKey && !e.shiftKey) {
 		if (e.keyCode === 67) {
 			var selectedText = window.getSelection().toString();
 			if (selectedText) {
