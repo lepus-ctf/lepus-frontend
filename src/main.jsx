@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_TEAMINFO, UPDATE_SERVEREVENT, UPDATE_CTFCONF, UPDATE_COUNTDOWN} from './store'
+import {UPDATE_TEAMINFO, UPDATE_SERVEREVENT, UPDATE_CTFCONF, UPDATE_COUNTDOWN, EE} from './store'
 import Router from 'react-router';
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
@@ -104,6 +104,9 @@ class Main extends React.Component {
 	closeBreakingnewsModal() {
 		this.setState({url: null, playOnce: false})
 	}
+	closeEEModal() {
+		this.props.resetEE();
+	}
 	clearError() {
 		this.setState({
 			error: null
@@ -116,6 +119,10 @@ class Main extends React.Component {
 			paddingLeft: "220px",
 		};
 		var maxSize = {
+			maxHeight: "100%",
+			maxWidth: "100%",
+		};
+		var fullSize = {
 			height: "100%",
 			width: "100%",
 		};
@@ -130,12 +137,20 @@ class Main extends React.Component {
 					<div className="ui dimmer modals page transition visible active">
 						<div className="ui small basic test modal transition visible active" style={centeredModal}>
 							<i className="icon close" onClick={this.closeBreakingnewsModal.bind(this)}></i>
-							<iframe src={this.state.url} frameBorder="0" style={maxSize}/>
+							<iframe src={this.state.url} frameBorder="0" style={fullSize}/>
 							<div className="ui container">
 								<div className="ui checkbox" onClick={this.unsetBreakingnews.bind(this)}>
 									<div className="ui grey tiny header">I'll not watch BREAKING NEWS any more.</div>
 								</div>
 							</div>
+						</div>
+					</div>
+					);
+		} else if (this.props.ee) {
+			modal = (
+					<div className="ui dimmer modals page transition visible active" onClick={this.closeEEModal.bind(this)}>
+						<div className="ui small basic test modal transition visible active" style={centeredModal} onClick={this.closeEEModal.bind(this)}>
+							<img src="./res/alternative-icon.png" style={maxSize} alt="alternative-icon" onClick={this.closeEEModal.bind(this)} />
 						</div>
 					</div>
 					);
@@ -216,6 +231,7 @@ export default connect(
 			events: state.events,
 			start: state.config.start,
 			end: state.config.end,
+			ee: state.easteregg,
 			countdown: state.countdown
 		}),
 		(dispatch) => ({
@@ -223,5 +239,6 @@ export default connect(
 			onReceiveServerEvent: (data) => dispatch({type: UPDATE_SERVEREVENT, data: data}),
 			updateCTFConfigurations: (data) => dispatch({type: UPDATE_CTFCONF, data: data}),
 			updateCountdown: (h, m, s) => dispatch({type: UPDATE_COUNTDOWN, data: {h, m, s}}),
+			resetEE: () => dispatch({type: EE, data: false}),
 		})
 		)(Main);

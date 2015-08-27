@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS} from './store'
+import {UPDATE_PROBLEMS, EE} from './store'
 global.React = React;
 var md2react = require('md2react');
 var remote = require('remote');
@@ -21,7 +21,8 @@ class Problem extends React.Component {
 			pending: false,
 			failed: false,
 			correct: false,
-			error: null
+			error: null,
+			answerCount: 0
 		};
 	}
 	componentWillMount() {
@@ -45,7 +46,6 @@ class Problem extends React.Component {
 			failed: false
 		});
 
-		var own = this;
 		console.log(this.state.flagText);
 		Api.submitFlag(this.props.params.id, this.state.flagText, () => {
 			this.setState({
@@ -53,11 +53,16 @@ class Problem extends React.Component {
 			});
 			React.render(<div><div className="header">Congratulations</div><p>{this.state.flagText} is correct!!</p></div>, document.querySelector('.ui.success.message'));
 		}, (mes) => {
-			own.setState({
+			this.setState({
 				pending: false,
-				failed: true
+				failed: true,
+				answerCount: this.state.answerCount + 1
 			});
 			React.render(<div><div className="header">Failed</div><p>{mes[0]}</p></div>, document.querySelector('.ui.error.message'));
+			if (this.state.answerCount > 5) {
+				this.props.tooManyWrongAnswer();
+				this.state.answerCount = 0;
+			}
 		})
 		return false;
 	}
@@ -225,5 +230,8 @@ export default connect(
 			teaminfo: state.teamInfo,
 			problems: state.problems
 		}),
-		(dispatch) => ({updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data})})
+		(dispatch) => ({
+			updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data}),
+			tooManyWrongAnswer: () => dispatch({type: EE, data: true}),
+		})
 		)(Problem);

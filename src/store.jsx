@@ -11,11 +11,13 @@ export const UPDATE_COUNTDOWN = 'updateCountdown';
 export const SET_VISIBLE_CATEGORY = 'setVisibleCategory';
 export const SET_HIDDEN_SOLVED = 'setHiddenSolved';
 export const RESET_EVENTS = 'resetEvents';
+export const EE = 'kkjjhlhlba';
 
 const initialState = {
 	point: 0,
 	solved: 0,
 	ranking: 0,
+	easteregg: false,
 	hiddenSolved: false,
 	visibleCategory: -1,
 	userInfo: {},
@@ -136,6 +138,9 @@ const dataStore = (state=initialState, action) => {
 				default:
 					console.log(JSON.stringify(action.data));
 			}
+			return state;
+		case EE:
+			state["easteregg"] = action.data;
 			return state;
 		default:
 			console.log(JSON.stringify(action));
