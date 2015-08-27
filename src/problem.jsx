@@ -131,8 +131,18 @@ class Problem extends React.Component {
 			width: progress + "%"
 		};
 		var attachments = problem["files"].map((file) => {
-			return (
-				<div>
+			var button;
+			if (file["size"] > 5 * 1024 * 1024) { // 5MB
+				button = (
+					<div className="ui buttons">
+						<button className="ui labeled icon button olive" onClick={this.copyDownloadLink.bind(this, file["name"], file["url"])} key={file["url"]}>
+							<i className="file linkify icon"></i>
+							{this.state.copiedLink == file.name ? "Link copied!" : file["name"]}
+						</button>
+					</div>
+					);
+			} else {
+				button = (
 					<div className="ui buttons">
 						<button className={'ui labeled icon button' + (this.state.downloading[file["name"]] ? ' loading' : '') + (this.state.copiedLink == file.name ? ' olive' : ' orange')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
 							<i className="file archive outline icon"></i>
@@ -142,6 +152,11 @@ class Problem extends React.Component {
 							<i className="file linkify icon"></i>
 						</button>
 					</div>
+					);
+			}
+			return (
+				<div>
+					{button}
 					<div className="ui pointing left label">{file["size"]} bytes</div>
 				</div>
 				   );
