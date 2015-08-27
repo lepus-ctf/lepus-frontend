@@ -34,13 +34,16 @@ var routes = (
 
 // Patch for Electron on OS X Copy/Paste bug
 function CopyPasteFunc(e){
-	if (e.ctrlKey != e.metaKey && !e.altKey && !e.shiftKey) {
+	// Command key presses
+	if (!e.ctrlKey && e.metaKey && !e.altKey && !e.shiftKey) {
 		if (e.keyCode === 67) {
+		// and key 'C' pressed
 			var selectedText = window.getSelection().toString();
 			if (selectedText) {
 				clipboard.writeText(selectedText);
 			}
 		} else if (e.keyCode === 86){
+		// and key 'V' pressed
 			var activeElement = document.activeElement;
 			var clipboardText = clipboard.readText();
 			if (clipboardText && activeElement && activeElement.type == "text") {
