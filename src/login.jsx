@@ -36,12 +36,12 @@ class Login extends React.Component {
 		Api.login(this.state.username, this.state.password, (userinfo) => {
 			this.props.saveUserinfo(userinfo);
 			this.context.router.transitionTo("dashboard");
-		}, (err, res) => {
+		}, (mes) => {
 			this.setState({
 				login_pending: false,
 				error: true
 			});
-			React.render(<p>{res.message}</p>, document.querySelector('.ui.error.message'));
+			React.render(<p>{mes[0]}</p>, document.querySelector('.ui.error.message'));
 		})
 	}
 	signUp() {
@@ -57,12 +57,12 @@ class Login extends React.Component {
 				success: true
 			});
 			React.render(<div><div className="header">New account created</div><p>Press "Login" to start CTF!</p></div>, document.querySelector('.ui.success.message'));
-		}, (err, res) => {
+		}, (mes) => {
 			this.setState({
 				signup_pending: false,
 				error: true
 			});
-			React.render(<p>{res.message}</p>, document.querySelector('.ui.error.message'));
+			React.render(<p>{mes[0]}</p>, document.querySelector('.ui.error.message'));
 		})
 		return true
 	}

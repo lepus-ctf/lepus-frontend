@@ -11,7 +11,7 @@ var RouteHandler = Router.RouteHandler;
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {url: "", breakingnews: true, playOnce: false};
+		this.state = {url: "", breakingnews: true, playOnce: false, error: null};
 		this.watchServerEvent();
 		this.getCTFConfigurations();
 	}
@@ -25,13 +25,19 @@ class Main extends React.Component {
 	updateTeaminfo() {
 		Api.team(this.props.userinfo.team, (json) => {
 			this.props.updateTeaminfo(json);
-		}, (err, res) => {
+		}, (mes) => {
+			this.setState({
+				error: mes
+			});
 		})
 	}
 	getCTFConfigurations() {
 		Api.configurations((json) => {
 			this.props.updateCTFConfigurations(json);
-		}, (err, res) => {
+		}, (mes) => {
+			this.setState({
+				error: mes
+			});
 		})
 	}
 	watchServerEvent() {
@@ -98,6 +104,11 @@ class Main extends React.Component {
 	closeBreakingnewsModal() {
 		this.setState({url: null, playOnce: false})
 	}
+	clearError() {
+		this.setState({
+			error: null
+		});
+	}
 	render() {
 		var mainStyle = {
 			height: "100%",
@@ -132,6 +143,18 @@ class Main extends React.Component {
 		var count = "Countdown";
 		if (countdown.h) {
 			count = countdown.h + ':' + countdown.m + ':' + countdown.s;
+		}
+		var errorMessage;
+		if (this.state.error) {
+			errorMessage = (
+					<div className="ui floating negative message">
+						<i className="close icon" onClick={this.clearError.bind(this)}></i>
+							<div className="header">
+								Error
+							</div>
+						<p>{this.state.error[0]}</p>
+					</div>
+					);
 		}
 		return (
 				<div className="ui" style={mainStyle}>
@@ -179,6 +202,7 @@ class Main extends React.Component {
 						</Link>
 					</div>
 					{modal}
+					{errorMessage}
 				</div>
 			   );
 	}

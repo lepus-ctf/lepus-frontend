@@ -7,7 +7,8 @@ class Problems extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			searchBoxFocused: false
+			searchBoxFocused: false,
+			error: null
 		};
 	}
 	componentWillMount() {
@@ -15,7 +16,9 @@ class Problems extends React.Component {
 		Api.problems((json) => {
 			this.props.updateProblems(json);
 		}, (err, res) => {
-			// TODO: error notification
+			this.setState({
+				error: mes
+			});
 		})
 		this.props.resetEvents();
 	}
@@ -39,6 +42,11 @@ class Problems extends React.Component {
 		this.setState({
 			searchBoxFocused: false
 		})
+	}
+	clearError() {
+		this.setState({
+			error: null
+		});
 	}
 	render() {
 		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
@@ -119,6 +127,18 @@ class Problems extends React.Component {
 				categoryName = "Category: " + key;
 			}
 		}
+		var errorMessage;
+		if (this.state.error) {
+			errorMessage = (
+					<div className="ui floating negative message">
+						<i className="close icon" onClick={this.clearError.bind(this)}></i>
+							<div className="header">
+								Error
+							</div>
+						<p>{this.state.error[0]}</p>
+					</div>
+					);
+		}
 		return (
 				<div className="ui container">
 					<div className="ui breadcrumb">
@@ -150,6 +170,7 @@ class Problems extends React.Component {
 					</div>
 					<div className="ui divider">
 					</div>
+					{errorMessage}
 				</div>
 			   );
 	}

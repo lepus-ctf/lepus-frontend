@@ -1,3 +1,4 @@
+import ErrorHandler from './error-handler'
 export class Api {
 	constructor() {
 		this.superagent = require('superagent');
@@ -5,6 +6,7 @@ export class Api {
 		this.serverUrl = "https://score.sakura.tductf.org";
 		this.apiEndpoint = this.serverUrl + "/api"
 		this.token = "";
+		this.errorHandler = new ErrorHandler();
 
 		var https = require('https');
 		var _addRequest = https.Agent.prototype.addRequest;
@@ -24,11 +26,8 @@ export class Api {
 			.send({username: username, password: password})
 			.end((err, res) => {
 				if (err || username != res.body.username) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					console.error(res.message);
-					console.error("Login failed.");
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					this.token = this.agent.jar.getCookie("csrftoken", res.req).value;
@@ -43,11 +42,8 @@ export class Api {
 			.send({username: username, password: password, team_name: username, team_password: password})
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					console.error(res.message);
-					console.error("Sign-up failed.");
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					success();
 				}
@@ -59,9 +55,8 @@ export class Api {
 			.get(this.apiEndpoint + '/configurations.json')
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					success(res.body);
@@ -75,9 +70,8 @@ export class Api {
 			.query({include: '1'})
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					success(res.body);
@@ -91,9 +85,8 @@ export class Api {
 			.query({include: '1'})
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					success(res.body);
@@ -106,9 +99,8 @@ export class Api {
 			.get(this.apiEndpoint + '/notices.json')
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					success(res.body);
@@ -123,9 +115,8 @@ export class Api {
 			.send({question: id, answer: flag})
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else if (res.body.is_correct) {
 					this.agent.saveCookies(res);
 					success();
@@ -143,9 +134,8 @@ export class Api {
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					success(res.body);
 				}
@@ -158,9 +148,8 @@ export class Api {
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					success(res.body);
 				}
@@ -172,9 +161,8 @@ export class Api {
 			.get(this.serverUrl + filepath)
 			.end((err, res) => {
 				if (err) {
-					res = res && res.text ? JSON.parse(res.text) : {message: err.toString()};
-					console.error(err);
-					failure(err, res);
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
 				} else {
 					this.agent.saveCookies(res);
 					success(res.body);

@@ -17,16 +17,19 @@ class Problem extends React.Component {
 			flagText: "",
 			downloading: {},
 			pending: false,
-			error: false,
-			correct: false
+			failed: false,
+			correct: false,
+			error: null
 		};
 	}
 	componentWillMount() {
 		// Tap tap API server
 		Api.problems((json) => {
 			this.props.updateProblems(json);
-		}, (err, res) => {
-			// TODO: error notification
+		}, (mes) => {
+			this.setState({
+				error: mes
+			});
 		})
 	}
 	changeText(e) {
@@ -37,7 +40,7 @@ class Problem extends React.Component {
 	submitFlag() {
 		this.setState({
 			pending: true,
-			error: false
+			failed: false
 		});
 
 		var own = this;
@@ -50,7 +53,7 @@ class Problem extends React.Component {
 		}, (err, res) => {
 			own.setState({
 				pending: false,
-				error: true
+				failed: true
 			});
 			React.render(<div><div className="header">Failed</div><p>{res.message}</p></div>, document.querySelector('.ui.error.message'));
 		})
@@ -90,6 +93,11 @@ class Problem extends React.Component {
 			}.bind(this));
 		}.bind(this));
 	}
+	clearError() {
+		this.setState({
+			error: null
+		});
+	}
 	render() {
 		const {teaminfo, problems} = this.props;
 		var problem;
@@ -117,6 +125,18 @@ class Problem extends React.Component {
 					</button>
 				   );
 		}.bind(this));
+		var errorMessage;
+		if (this.state.error) {
+			errorMessage = (
+					<div className="ui floating negative message">
+						<i className="close icon" onClick={this.clearError.bind(this)}></i>
+							<div className="header">
+								Error
+							</div>
+						<p>{this.state.error[0]}</p>
+					</div>
+					);
+		}
 		return (
 				<div className="ui container">
 					<div className="ui breadcrumb">
@@ -143,7 +163,7 @@ class Problem extends React.Component {
 							</div>
 						</div>
 					</div>
-					<form className={'ui form' + (this.state.error ? ' error' : (this.state.correct ? ' success' : ''))} onSubmit={this.submitFlag.bind(this)}>
+					<form className={'ui form' + (this.state.failed ? ' error' : (this.state.correct ? ' success' : ''))} onSubmit={this.submitFlag.bind(this)}>
 						<div className="ui indicating progress active" data-percent="0">
 							<div className="bar" style={progressStyle} ></div>
 							<div className="label">You got {~~problem_status.points} points of {problem["points"]} points</div>
@@ -158,6 +178,7 @@ class Problem extends React.Component {
 					</form>
 					<div className="ui divider">
 					</div>
+					{errorMessage}
 				</div>
 			   );
 	}

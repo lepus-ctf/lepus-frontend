@@ -6,13 +6,18 @@ import {UPDATE_TEAMLIST} from './store'
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			error: null
+		};
 	}
 	componentWillMount() {
 		// Tap tap API server
 		Api.teamlist((json) => {
 			this.props.updateTeamlist(json);
-		}, (err, res) => {
-			// TODO: error notification
+		}, (mes) => {
+			this.setState({
+				error: mes
+			});
 		})
 		this.timer = setInterval(() => {
 			this.setState({now: new Date()})
@@ -21,8 +26,25 @@ class Dashboard extends React.Component {
 	componentWillUnmount() {
 		clearInterval(this.timer);
 	}
+	clearError() {
+		this.setState({
+			error: null
+		});
+	}
 	render() {
 		const {point, solved, teamlist, ranking, countdown} = this.props;
+		var errorMessage;
+		if (this.state.error) {
+			errorMessage = (
+					<div className="ui floating negative message">
+						<i className="close icon" onClick={this.clearError.bind(this)}></i>
+							<div className="header">
+								Error
+							</div>
+						<p>{this.state.error[0]}</p>
+					</div>
+					);
+		}
 		return (
 				<div className="ui container">
 					<h1 className="ui top header blue">Countdown</h1>
@@ -96,6 +118,7 @@ class Dashboard extends React.Component {
 							</div>
 						</div>
 					</div>
+					{errorMessage}
 				</div>
 			   );
 	}

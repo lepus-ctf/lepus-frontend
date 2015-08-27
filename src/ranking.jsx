@@ -7,7 +7,8 @@ class Ranking extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			updated: null
+			updated: null,
+			error: null
 		};
 	}
 	componentWillMount() {
@@ -17,9 +18,16 @@ class Ranking extends React.Component {
 			this.setState({
 				updated: Date()
 			});
-		}, (err, res) => {
-			// TODO: error notification
+		}, (mes) => {
+			this.setState({
+				error: mes
+			});
 		})
+	}
+	clearError() {
+		this.setState({
+			error: null
+		});
 	}
 	render() {
 		const {teaminfo, teamlist} = this.props;
@@ -32,6 +40,18 @@ class Ranking extends React.Component {
 							</tr>
 				   );
 		});
+		var errorMessage;
+		if (this.state.error) {
+			errorMessage = (
+					<div className="ui floating negative message">
+						<i className="close icon" onClick={this.clearError.bind(this)}></i>
+							<div className="header">
+								Error
+							</div>
+						<p>{this.state.error[0]}</p>
+					</div>
+					);
+		}
 		return (
 				<div className="ui container">
 					<div>Last updated: <span>{this.state.updated}</span></div>
@@ -49,6 +69,7 @@ class Ranking extends React.Component {
 					</table>
 					<div className="ui divider">
 					</div>
+					{errorMessage}
 				</div>
 			   );
 	}
