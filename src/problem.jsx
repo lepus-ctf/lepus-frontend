@@ -52,12 +52,12 @@ class Problem extends React.Component {
 				correct: true
 			});
 			React.render(<div><div className="header">Congratulations</div><p>{this.state.flagText} is correct!!</p></div>, document.querySelector('.ui.success.message'));
-		}, (err, res) => {
+		}, (mes) => {
 			own.setState({
 				pending: false,
 				failed: true
 			});
-			React.render(<div><div className="header">Failed</div><p>{res.message}</p></div>, document.querySelector('.ui.error.message'));
+			React.render(<div><div className="header">Failed</div><p>{mes[0]}</p></div>, document.querySelector('.ui.error.message'));
 		})
 		return false;
 	}

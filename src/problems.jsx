@@ -15,7 +15,7 @@ class Problems extends React.Component {
 		// Tap tap API server
 		Api.problems((json) => {
 			this.props.updateProblems(json);
-		}, (err, res) => {
+		}, (mes) => {
 			this.setState({
 				error: mes
 			});
