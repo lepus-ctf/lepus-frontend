@@ -10,7 +10,8 @@ import Ranking from './js/ranking';
 import Announcements from './js/announcements';
 import Main from './js/main';
 import {Top} from './js/top';
-
+var remote = require('remote');
+var clipboard = remote.require('clipboard');
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
@@ -30,6 +31,31 @@ var routes = (
 			<DefaultRoute handler={Login}/>
 		</Route>
 		);
+
+// Patch for Electron on OS X Copy/Paste bug
+function CopyPasteFunc(e){
+	if (e.ctrlKey != e.metaKey && e.altKey && !e.shiftKey) {
+		if (e.keyCode === 67) {
+			var selectedText = window.getSelection().toString();
+			if (selectedText) {
+				clipboard.writeText(selectedText);
+			}
+		} else if (e.keyCode === 86){
+			var activeElement = document.activeElement;
+			var clipboardText = clipboard.readText();
+			if (clipboardText && activeElement && activeElement.type == "text") {
+				var currentText = activeElement.value;
+				var cursorPosition = activeElement.selectionStart;
+				if (cursorPosition != activeElement.selectionEnd) {
+					currentText = currentText.slice(0, cursorPosition) + currentText.slice(activeElement.selectionEnd);
+				}
+				activeElement.value = currentText.slice(0, cursorPosition) + clipboardText + currentText.slice(cursorPosition);
+				activeElement.selectionStart = activeElement.selectionEnd = cursorPosition + clipboardText.length;
+			}
+		}
+	}
+}
+document.addEventListener("keydown", CopyPasteFunc);
 
 Router.run(routes, (Handler, routerState) => {
 	React.render((
