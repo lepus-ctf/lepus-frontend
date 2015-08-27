@@ -19,14 +19,14 @@ var commonOption = {
 		arch: 'all',
 		platform: 'all',
 		ignore: [
-			'./node_modules/gulp*',
-			'./node_modules/electron*',
-			'./node_modules/semantic-ui',
-			'./node_modules/yamljs',
-			'./node_modules/.bin',
-			'./release',
-			'./src',
-			'./.git*'
+			'\./node_modules/gulp*',
+			'\./node_modules/electron*',
+			'\./node_modules/semantic-ui',
+			'\./node_modules/yamljs',
+			'\./node_modules/.bin',
+			'\./release/',
+			'\./src/',
+			'\./.git*'
 		],
 		version: '0.30.5'
 }
