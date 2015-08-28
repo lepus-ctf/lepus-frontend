@@ -21,9 +21,8 @@ app.on('ready', function() {
 	mainWindow.on('closed', function() {
 		mainWindow = null;
 	});
-});
 
-var menu = Menu.buildFromTemplate([
+	var menu = Menu.buildFromTemplate([
 		{
 			label: 'TDUCTF',
 			submenu: [
@@ -69,5 +68,6 @@ var menu = Menu.buildFromTemplate([
 			{label: 'Contact to admin'},
 			]
 		}
-]);
-Menu.setApplicationMenu(menu);
+	]);
+	Menu.setApplicationMenu(menu);
+});
