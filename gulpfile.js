@@ -26,7 +26,7 @@ var commonOption = {
 			'./src/',
 			'./.git*'
 		],
-		version: '0.31.1'
+		version: '0.30.6'
 }
 
 gulp.task('package:darwin', ['compile'], function (done) {
