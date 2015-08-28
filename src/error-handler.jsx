@@ -1,5 +1,6 @@
 export default class ErrorHandler {
 	constructor() {
+		this.criticalAction = (() => {});
 		this.errorCodes = [
 			"REQUIRED",
 			"TOO_LONG",
@@ -85,6 +86,9 @@ export default class ErrorHandler {
 			} catch(e) {
 				messages.push("REALLY_UNKNOWN_ERROR");
 			}
+		}
+		if (!!res && res.status === 403) {
+			this.criticalAction();
 		}
 		console.log(JSON.stringify(messages));
 		return messages;

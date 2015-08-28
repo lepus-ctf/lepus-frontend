@@ -12,11 +12,18 @@ class Login extends React.Component {
 			login_pending: false,
 			signup_pending: false,
 			error: false,
+			message: "",
 			success: false
 		};
 	}
 	componentWillMount() {
 		document.body.style.backgroundColor = "black";
+		if (this.props && this.props.query && this.props.query.message) {
+			this.setState({
+				error: true,
+				message: this.props.query.message
+			});
+		}
 	}
 	componentWillUnmount() {
 		document.body.style.backgroundColor = null;
@@ -39,9 +46,9 @@ class Login extends React.Component {
 		}, (mes) => {
 			this.setState({
 				login_pending: false,
-				error: true
+				error: true,
+				message: mes[0]
 			});
-			React.render(<p>{mes[0]}</p>, document.querySelector('.ui.error.message'));
 		})
 	}
 	signUp() {
@@ -60,9 +67,9 @@ class Login extends React.Component {
 		}, (mes) => {
 			this.setState({
 				signup_pending: false,
-				error: true
+				error: true,
+				message: mes[0]
 			});
-			React.render(<p>{mes[0]}</p>, document.querySelector('.ui.error.message'));
 		})
 		return true
 	}
@@ -104,7 +111,7 @@ class Login extends React.Component {
 								</div>
 								<div className={'ui inline centered loader' + (this.state.signup_pending || this.state.login_pending ? ' active' : ' disabled ')} ></div>
 							</div>
-							<div className="ui error message"></div>
+							<div className="ui error message"><p>{this.state.message}</p></div>
 							<div className="ui success message"></div>
 						</form>
 					</div>

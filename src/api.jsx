@@ -1,4 +1,5 @@
 import ErrorHandler from './error-handler'
+var CookieJar = require('cookiejar').CookieJar;
 export class Api {
 	constructor() {
 		this.superagent = require('superagent');
@@ -20,7 +21,11 @@ export class Api {
 			return _addRequest.apply(this, args);
 		};
 	}
+	setCriticalAction(func) {
+		this.errorHandler.criticalAction = func || (() => {});
+	}
 	login(username, password, success, failure) {
+		this.agent.jar = new CookieJar; // Reset for re-login
 		this.superagent
 			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})

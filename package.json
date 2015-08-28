@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "better-console": "^0.2.4",
+    "cookiejar": "^2.0.1",
     "del": "^1.2.1",
     "extend": "^3.0.0",
     "gulp": "^3.9.0",

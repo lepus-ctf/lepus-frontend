@@ -123,6 +123,7 @@ class Main extends React.Component {
 				this.props.updateCountdown(h, m, s);
 			}
 		}.bind(this), 1000);
+		Api.setCriticalAction((() => {this.context.router.transitionTo("login", {}, {message: "You need to re-login."})}.bind(this)));
 	}
 	componentWillUnmount() {
 		document.body.style.backgroundColor = null;

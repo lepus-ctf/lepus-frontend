@@ -18,7 +18,7 @@ var Route = Router.Route;
 
 var routes = (
 		<Route path="/" handler={Top}>
-			<Route path="/login" handler={Login} />
+			<Route name="login" path="/login" handler={Login} />
 			<Route name="main" handler={Main}>
 				<Route name="dashboard" handler={Dashboard}/>
 				<Route name="problems" path="/problems" handler={Problems}>
