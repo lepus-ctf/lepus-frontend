@@ -133,11 +133,13 @@ class Problem extends React.Component {
 		}.bind(this, this.props.params.id));
 		if (!problem) return (<div>Can't find a problem.</div>);
 		var problem_status = {};
-		teaminfo.questions.forEach((t_state) => {
-			if (problem.id == t_state.id) {
-				problem_status = t_state;
-			}
-		}.bind(this))
+		if (teaminfo && teaminfo.questions) {
+			teaminfo.questions.forEach((t_state) => {
+				if (problem.id == t_state.id) {
+					problem_status = t_state;
+				}
+			}.bind(this))
+		}
 		var progress = Math.round(~~problem_status.points / problem["points"] * 100);
 		var progressStyle = {
 			width: progress + "%"
