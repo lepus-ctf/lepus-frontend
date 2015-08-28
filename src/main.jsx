@@ -71,7 +71,7 @@ class Main extends React.Component {
 										this.context.router.transitionTo("announcements");
 									}.bind(this);
 								}.bind(this))
-							}, ~~(Math.random() * 1000));
+							}.bind(this), ~~(Math.random() * 1000));
 							break;
 						case "question":
 							var n = new Notification('TDUCTF 2015 - Problems', {
