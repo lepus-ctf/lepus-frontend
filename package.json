@@ -33,7 +33,7 @@
   "homepage": "https://github.com/mzyy94/tductf-frontend",
   "devDependencies": {
     "electron-packager": "^5.0.2",
-    "electron-prebuilt": "^0.30.4",
+    "electron-prebuilt": "^0.31.1",
     "gulp-babel": "^5.2.0",
     "gulp-load-plugins": "^1.0.0-rc.1"
   },
