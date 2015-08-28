@@ -115,6 +115,12 @@ class Main extends React.Component {
 		setInterval(() => {
 			if (!!this.props.start && !!this.props.end) {
 				const now = new Date();
+				if (now - this.props.start < 0) {
+					return;
+				} else if (this.props.end - now < 0) {
+					this.props.updateCountdown(null, null, null);
+					return;
+				}
 				const diff = new Date(this.props.end - now);
 				const h = Math.round(diff.getTime() / 1000 / 3600);
 				const time = diff.toUTCString().replace(/^.*\d\d:(\d\d:\d\d).*$/,'$1');
@@ -156,7 +162,7 @@ class Main extends React.Component {
 			height: "70%",
 			marginTop: "-20%",
 		}
-		const {point, solved, events, countdown} = this.props;
+		const {point, solved, events, start, end, countdown} = this.props;
 		var modal;
 		if (this.state.url && (this.state.breakingnews || this.state.playOnce)) {
 			modal = (
@@ -182,7 +188,12 @@ class Main extends React.Component {
 					);
 		}
 		var count = "Countdown";
-		if (countdown.h) {
+		const now = new Date();
+		if (now - start < 0) {
+			count = start.toString().replace(/^.*(\d\d:\d\d):\d\d.*$/,'$1') + " start."
+		} else if (end - now < 0) {
+			count = end.toString().replace(/^.*(\d\d:\d\d):\d\d.*$/,'$1') + " closed."
+		} else if (countdown.h) {
 			count = countdown.h + ':' + countdown.m + ':' + countdown.s;
 		}
 		var errorMessage;
