@@ -56,18 +56,18 @@ gulp.task('package:linux:x64', ['compile'], function (done) {
 	});
 });
 
-gulp.task('package:win:ia32', ['compile'], function (done) {
+gulp.task('package:win32:ia32', ['compile'], function (done) {
 	var option = commonOption;
-	option.platform = 'win';
+	option.platform = 'win32';
 	option.arch = 'ia32';
 	packager(option, function (err, path) {
 		done();
 	});
 });
 
-gulp.task('package:win:x64', ['compile'], function (done) {
+gulp.task('package:win32:x64', ['compile'], function (done) {
 	var option = commonOption;
-	option.platform = 'win';
+	option.platform = 'win32';
 	option.arch = 'x64';
 	packager(option, function (err, path) {
 		done();
@@ -78,8 +78,8 @@ gulp.task('package:all', [
 		'package:darwin',
 		'package:linux:ia32',
 		'package:linux:x64',
-		'package:win:ia32',
-		'package:win:x64'], function (done) {
+		'package:win32:ia32',
+		'package:win32:x64'], function (done) {
 	done();
 });
 

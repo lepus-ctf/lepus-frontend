@@ -2,7 +2,7 @@
 Name=TDUCTF-2015
 Comment=TDUCTF frontend application
 Exec=TDUCTF-2015
-Icon=app-icon.png
+Icon=~/app-icon.png
 Type=Application
 Terminal=false
 Categories=Game;

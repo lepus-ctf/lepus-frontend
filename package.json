@@ -11,8 +11,8 @@
     "package:darwin": "gulp package:darwin",
     "package:linux:x64": "gulp package:linux:x64",
     "package:linux:ia32": "gulp package:linux:ia32",
-    "package:win:x64": "gulp package:win:x64",
-    "package:win:ia32": "gulp package:win:ia32",
+    "package:win32:x64": "gulp package:win32:x64",
+    "package:win32:ia32": "gulp package:win32:ia32",
     "package:all": "gulp package:all",
     "postinstall": "node font_donwloader.js"
   },
