@@ -14,7 +14,7 @@
     "package:win:x64": "gulp package:win:x64",
     "package:win:ia32": "gulp package:win:ia32",
     "package:all": "gulp package:all",
-    "postinstall": "node font_donwloader.js && cd semantic && gulp build"
+    "postinstall": "node font_donwloader.js"
   },
   "repository": {
     "type": "git",
@@ -74,7 +74,7 @@
     "react-router": "^0.13.3",
     "redux": "^1.0.1",
     "require-dot-file": "^0.4.0",
-    "semantic-ui": "^2.0.8",
+    "semantic-ui-css": "^2.0.8",
     "socket.io-client": "^1.3.6",
     "superagent": "^1.3.0",
     "yamljs": "^0.2.3"

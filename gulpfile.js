@@ -20,7 +20,6 @@ var commonOption = {
 		platform: 'all',
 		ignore: [
 			'./node_modules/electron*',
-			'./node_modules/semantic-ui',
 			'./node_modules/.bin',
 			'./release/',
 			'./src/',
