@@ -18,6 +18,7 @@ var commonOption = {
 		name: 'TDUCTF-2015',
 		arch: 'all',
 		platform: 'all',
+		asar: true,
 		ignore: [
 			'./node_modules/electron*',
 			'./node_modules/.bin',
@@ -32,7 +33,6 @@ gulp.task('package:darwin', ['compile'], function (done) {
 	var option = commonOption;
 	option.platform = 'darwin';
 	option.arch = 'x64';
-	option.icon = "app-icon.icns";
 	packager(option, function (err, path) {
 		done();
 	});
@@ -42,7 +42,6 @@ gulp.task('package:linux:ia32', ['compile'], function (done) {
 	var option = commonOption;
 	option.platform = 'linux';
 	option.arch = 'ia32';
-	option.icon = "app-icon.png";
 	packager(option, function (err, path) {
 		done();
 	});
@@ -52,7 +51,6 @@ gulp.task('package:linux:x64', ['compile'], function (done) {
 	var option = commonOption;
 	option.platform = 'linux';
 	option.arch = 'x64';
-	option.icon = "app-icon.png";
 	packager(option, function (err, path) {
 		done();
 	});
@@ -62,7 +60,6 @@ gulp.task('package:win:ia32', ['compile'], function (done) {
 	var option = commonOption;
 	option.platform = 'win';
 	option.arch = 'ia32';
-	option.icon = "app-icon.ico";
 	packager(option, function (err, path) {
 		done();
 	});
@@ -72,7 +69,6 @@ gulp.task('package:win:x64', ['compile'], function (done) {
 	var option = commonOption;
 	option.platform = 'win';
 	option.arch = 'x64';
-	option.icon = "app-icon.ico";
 	packager(option, function (err, path) {
 		done();
 	});
