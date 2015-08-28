@@ -89,7 +89,7 @@ class Main extends React.Component {
 					}
 					break;
 				case "youtube":
-					this.setState({url: "http://www.youtube.com/embed/" + data["video_id"] + "?autoplay=1"});
+					this.setState({url: "https://www.youtube.com/embed/" + data["video_id"] + "?autoplay=1&controls=0&fs=0&showinfo=0&rel=0&disablekb=1&modestbranding=1"});
 					if (!this.state.breakingnews) {
 						var n = new Notification('TDUCTF 2015', {
 							body: 'Breaking news!'
