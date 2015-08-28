@@ -152,10 +152,6 @@ class Main extends React.Component {
 			maxHeight: "100%",
 			maxWidth: "100%",
 		};
-		var fullSize = {
-			height: "100%",
-			width: "100%",
-		};
 		var centeredModal = {
 			height: "70%",
 			marginTop: "-20%",
@@ -167,7 +163,7 @@ class Main extends React.Component {
 					<div className="ui dimmer modals page transition visible active">
 						<div className="ui small basic test modal transition visible active" style={centeredModal}>
 							<i className="icon close" onClick={this.closeBreakingnewsModal.bind(this)}></i>
-							<iframe src={this.state.url} frameBorder="0" style={fullSize}/>
+							<iframe src={this.state.url} frameBorder="0" style={maxSize} width="960" height="540" />
 							<div className="ui container">
 								<div className="ui checkbox" onClick={this.unsetBreakingnews.bind(this)}>
 									<div className="ui grey tiny header">I'll not watch BREAKING NEWS any more.</div>
