@@ -62,15 +62,15 @@ class Main extends React.Component {
 									});
 									n.onclick = () => {
 										this.context.router.transitionTo("announcements");
-									};
-								}, (mes) => {
+									}.bind(this);
+								}.bind(this), (mes) => {
 									var n = new Notification('TDUCTF 2015 - Announcements', {
 										body: 'New 1 announcement'
 									});
 									n.onclick = () => {
 										this.context.router.transitionTo("announcements");
-									};
-								})
+									}.bind(this);
+								}.bind(this))
 							}, ~~(Math.random() * 1000));
 							break;
 						case "question":
@@ -79,7 +79,7 @@ class Main extends React.Component {
 							});
 							n.onclick = () => {
 								this.context.router.transitionTo("problems");
-							};
+							}.bind(this);
 							break;
 					}
 					break;
