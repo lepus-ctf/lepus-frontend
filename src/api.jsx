@@ -94,6 +94,20 @@ export class Api {
 			});
 	}
 
+	announcement(id, success, failure) {
+		this.superagent
+			.get(this.apiEndpoint + '/notices/' + id + '.json')
+			.end((err, res) => {
+				if (err) {
+					const error = this.errorHandler.parseError(err, res);
+					failure(error);
+				} else {
+					this.agent.saveCookies(res);
+					success(res.body);
+				}
+			});
+	}
+
 	announcements(success, failure) {
 		this.superagent
 			.get(this.apiEndpoint + '/notices.json')

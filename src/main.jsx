@@ -53,6 +53,35 @@ class Main extends React.Component {
 			switch (data.type) {
 				case "update":
 					this.props.onReceiveServerEvent(data);
+					switch (data.model) {
+						case "notice":
+							setTimeout(function() {
+								Api.announcement(data.id, (json) => {
+									var n = new Notification('TDUCTF 2015 - Announcements', {
+										body: json.title
+									});
+									n.onclick = () => {
+										this.context.router.transitionTo("announcements");
+									};
+								}, (mes) => {
+									var n = new Notification('TDUCTF 2015 - Announcements', {
+										body: 'New 1 announcement'
+									});
+									n.onclick = () => {
+										this.context.router.transitionTo("announcements");
+									};
+								})
+							}, ~~(Math.random() * 1000));
+							break;
+						case "question":
+							var n = new Notification('TDUCTF 2015 - Problems', {
+								body: 'New 1 problem update'
+							});
+							n.onclick = () => {
+								this.context.router.transitionTo("problems");
+							};
+							break;
+					}
 					break;
 				case "answer":
 					if (data.team === this.props.userinfo.team) {
@@ -222,6 +251,10 @@ class Main extends React.Component {
 			   );
 	}
 };
+Main.contextTypes = {
+  router: React.PropTypes.func.isRequired
+};
+
 
 export default connect(
 		(state) => ({
