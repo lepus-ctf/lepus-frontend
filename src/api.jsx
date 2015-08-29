@@ -9,6 +9,15 @@ export class Api {
 		this.token = "";
 		this.errorHandler = new ErrorHandler();
 
+		this.superagent.parse['image'] = function(res, fn) {
+			res.text = '';
+			res.setEncoding('binary');
+			res.on('data', function(chunk) {
+				res.text += chunk.toString('binary');
+			});
+			res.on('end', fn);
+		}
+
 		var https = require('https');
 		var _addRequest = https.Agent.prototype.addRequest;
 		var self = this;
@@ -178,19 +187,14 @@ export class Api {
 	downloadFile(filepath, success, failure) {
 		this.superagent
 			.get(this.serverUrl + filepath)
+			.buffer(true)
 			.end((err, res) => {
 				if (err) {
 					const error = this.errorHandler.parseError(err, res);
 					failure(error);
 				} else {
 					this.agent.saveCookies(res);
-					var data = [];
-					res.on('data', function(chunk){
-						data.push(chunk);
-					});
-					res.on('end', function () {
-						success(Buffer.concat(data));
-					});
+					success(Buffer(res.text, 'binary'));
 				}
 			});
 	}
