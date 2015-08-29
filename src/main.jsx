@@ -74,12 +74,24 @@ class Main extends React.Component {
 							}.bind(this), ~~(Math.random() * 1000));
 							break;
 						case "question":
-							var n = new Notification('TDUCTF 2015 - Problems', {
-								body: 'New 1 problem update'
-							});
-							n.onclick = () => {
-								this.context.router.transitionTo("problems");
-							}.bind(this);
+							console.log(JSON.stringify(data));
+							setTimeout(function() {
+								Api.problem(data.id, (json) => {
+									var n = new Notification('TDUCTF 2015 - Problems', {
+										body: json.title + ' updated'
+									});
+									n.onclick = () => {
+										this.context.router.transitionTo("problems");
+									}.bind(this);
+								}.bind(this), (mes) => {
+									var n = new Notification('TDUCTF 2015 - Problems', {
+										body: 'New 1 problem update'
+									});
+									n.onclick = () => {
+										this.context.router.transitionTo("problems");
+									}.bind(this);
+								}.bind(this))
+							}.bind(this), ~~(Math.random() * 1000));
 							break;
 					}
 					break;
