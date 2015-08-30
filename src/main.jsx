@@ -134,10 +134,10 @@ class Main extends React.Component {
 					return;
 				}
 				const diff = new Date(this.props.end - now);
-				const h = Math.round(diff.getTime() / 1000 / 3600);
-				const time = diff.toUTCString().replace(/^.*\d\d:(\d\d:\d\d).*$/,'$1');
-				const m = time.replace(/^(\d\d):\d\d$/,'$1');
-				const s = time.replace(/^\d\d:(\d\d)$/,'$1');
+				const time = diff.toUTCString().replace(/^.*(\d\d:\d\d:\d\d).*$/,'$1');
+				const h = time.replace(/^(\d\d):\d\d:\d\d$/,'$1');
+				const m = time.replace(/^\d\d:(\d\d):\d\d$/,'$1');
+				const s = time.replace(/^\d\d:\d\d:(\d\d)$/,'$1');
 				this.props.updateCountdown(h, m, s);
 			}
 		}.bind(this), 1000);
