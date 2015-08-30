@@ -9,6 +9,7 @@ export const UPDATE_SERVEREVENT = 'updateServerEvent';
 export const UPDATE_CTFCONF = 'updateCTFConfigurations';
 export const UPDATE_COUNTDOWN = 'updateCountdown';
 export const SET_VISIBLE_CATEGORY = 'setVisibleCategory';
+export const SET_VISIBLE_LEVEL = 'setVisibleLevel';
 export const SET_HIDDEN_SOLVED = 'setHiddenSolved';
 export const RESET_EVENTS = 'resetEvents';
 export const EE = 'kkjjhlhlba';
@@ -20,6 +21,7 @@ const initialState = {
 	easteregg: false,
 	hiddenSolved: false,
 	visibleCategory: -1,
+	visibleLevel: -1,
 	userInfo: {},
 	teamInfo: {},
 	problems: [],
@@ -122,7 +124,12 @@ const dataStore = (state=initialState, action) => {
 			state["countdown"] = action.data;
 			return state;
 		case SET_VISIBLE_CATEGORY:
+			state["visibleLevel"] = -1;
 			state["visibleCategory"] = action.data;
+			return state;
+		case SET_VISIBLE_LEVEL:
+			state["visibleCategory"] = -1;
+			state["visibleLevel"] = action.data;
 			return state;
 		case SET_HIDDEN_SOLVED:
 			state["hiddenSolved"] = action.data;

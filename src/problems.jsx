@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS, RESET_EVENTS, SET_VISIBLE_CATEGORY, SET_HIDDEN_SOLVED} from './store'
+import {UPDATE_PROBLEMS, RESET_EVENTS, SET_VISIBLE_CATEGORY, SET_VISIBLE_LEVEL, SET_HIDDEN_SOLVED} from './store'
 import Router from 'react-router';
 var Link = Router.Link;
 
@@ -37,7 +37,12 @@ class Problems extends React.Component {
 		this.setState({
 			searchBoxFocused: false
 		})
-
+	}
+	onLevelClick(e) {
+		this.props.setVisibleLevel(e.target.getAttribute("data-id"));
+		this.setState({
+			searchBoxFocused: false
+		})
 	}
 	clearCatrgory() {
 		this.props.setVisibleCategory(-1);
@@ -52,21 +57,27 @@ class Problems extends React.Component {
 	}
 	render() {
 		const colors = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "gray"];
-		const {teaminfo, solvedTeams, problems, hiddenSolved, visibleCategory} = this.props;
+		const {teaminfo, solvedTeams, problems, hiddenSolved, visibleCategory, visibleLevel} = this.props;
 		var problem_status = {};
 		if (teaminfo.questions) {
 			teaminfo.questions.forEach((problem) => {
 				problem_status[problem.id] = problem;
 			})
 		}
+		var maxPoint = -1;
 		var categories = {};
+		console.log(visibleLevel);
 		var cards = problems.map((problem) => {
 			var difficulty = [];
-			for (var i = 0; i < problem["points"]; i+=100)
+			for (var i = 0; i < problem["points"]; i+=100) {
 				difficulty.push(<i className="lightning icon" key={i}></i>);
+			}
+			maxPoint = maxPoint > problem["points"] ? maxPoint : problem["points"];
 
 			categories[problem["category"]["name"]] = problem["category"]["id"];
 			if (visibleCategory >= 0 && visibleCategory != problem["category"]["id"]) {
+				return
+			} else if (visibleLevel > 0 && ((visibleLevel * 100) < problem["points"] || ((visibleLevel - 1) * 100) >= problem["points"])) {
 				return
 			}
 			var solved;
@@ -109,7 +120,7 @@ class Problems extends React.Component {
 				</div>
 				);
 		})
-		var categoryName = "";
+		var searchInput = "";
 		var categoryList = [
 					<div className="result" key="-1" data-id="-1" onClick={this.onCategoryClick.bind(this)}>
 						<div className="content" data-id="-1">
@@ -126,7 +137,30 @@ class Problems extends React.Component {
 					</div>
 					);
 			if (visibleCategory == categories[key]) {
-				categoryName = "Category: " + key;
+				searchInput = "Category: " + key;
+			}
+		}
+		var levelList = [
+					<div className="result" key="-1" data-id="-1" onClick={this.onLevelClick.bind(this)}>
+						<div className="content" data-id="-1">
+							<div className="title" data-id="-1">All</div>
+						</div>
+					</div>
+			];
+		for (var i = 100; i <= maxPoint; i += 100) {
+			var difficulty = [];
+			for (var j = 0; j < i; j += 100) {
+				difficulty.push(<i className="lightning icon" key={j}></i>);
+			}
+			levelList.push(
+					<div className="result" key={~~(i / 100)} data-id={~~(i / 100)} onClick={this.onLevelClick.bind(this)}>
+						<div className="content" data-id={~~(i / 100)}>
+							<div className="title" data-id={~~(i / 100)}>{difficulty}</div>
+						</div>
+					</div>
+					);
+			if (visibleLevel == ~~(i / 100)) {
+				searchInput = "Difficulty: " + ~~(i / 100);
 			}
 		}
 		var errorMessage;
@@ -155,14 +189,18 @@ class Problems extends React.Component {
 						</div>
 						<div className="ui right aligned category search item">
 							<div className="ui transparent icon input">
-								<input className="prompt" type="text" placeholder="Search problems..." onFocus={this.onSearchBoxFocus.bind(this)} value={categoryName}/>
-								<i className={!categoryName ? "search link icon" : "close icon link"} onClick={this.clearCatrgory.bind(this)}></i>
+								<input className="prompt" type="text" placeholder="Search problems..." onFocus={this.onSearchBoxFocus.bind(this)} value={searchInput}/>
+								<i className={!searchInput ? "search link icon" : "close icon link"} onClick={this.clearCatrgory.bind(this)}></i>
 							</div>
 							<div className="results"></div>
 							<div className={"results transition" + (this.state.searchBoxFocused ? " visible" : "")} >
 								<div className="category">
 									<div className="name">Category</div>
 									{categoryList}
+								</div>
+								<div className="category">
+									<div className="name">Level</div>
+									{levelList}
 								</div>
 							</div>
 						</div>
@@ -184,12 +222,14 @@ export default connect(
 			solvedTeams: state.solvedTeams,
 			problems: state.problems,
 			visibleCategory: state.visibleCategory,
+			visibleLevel: state.visibleLevel,
 			hiddenSolved: state.hiddenSolved
 		}),
 		(dispatch) => ({
 			updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data}),
 			resetEvents: () => dispatch({type: RESET_EVENTS, data: "problems"}),
 			setVisibleCategory: (data) => dispatch({type: SET_VISIBLE_CATEGORY, data: data}),
+			setVisibleLevel: (data) => dispatch({type: SET_VISIBLE_LEVEL, data: data}),
 			hideSolved: (data) => dispatch({type: SET_HIDDEN_SOLVED, data: data}),
 		})
 		)(Problems);
