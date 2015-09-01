@@ -2,6 +2,47 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var packager = require('electron-packager');
 
+gulp.task('download:font', function (done) {
+	var urls = [
+		"http://mplus-fonts.osdn.jp/webfonts/mplus-2m-regular.ttf",
+		"http://mplus-fonts.osdn.jp/webfonts/mplus-2p-regular.ttf",
+	];
+
+	var fs = require('fs');
+	var path = require('path');
+	var dirname = "font"
+
+	if (fs.existsSync(dirname)) {
+		// Already exists. Skip downloading font.
+		return done();
+	}
+	fs.mkdirSync(dirname);
+
+	console.log('downloading web font.');
+
+	process.on('download', function(i) {
+		var url = urls[i];
+		if (!url) {
+			return done();
+		}
+		console.log(url);
+		var http = require(url.split(':')[0]);
+		http.get(url, function(res) {
+			var filename = path.join(dirname, path.basename(url));
+			var output = fs.createWriteStream(filename);
+			res.pipe(output);
+			res.on('end', function() {
+				process.nextTick(function() {
+					process.emit('download', ++i);
+				})
+			});
+		}).on('error', function(err) {
+			console.log('error', err);
+		});
+	})
+	process.emit('download', 0);
+});
+
 gulp.task('compile', function(){
 	return gulp.src('src/**/*.{js,jsx}')
 		.pipe(
