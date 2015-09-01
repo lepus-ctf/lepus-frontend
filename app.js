@@ -24,7 +24,7 @@ app.on('ready', function() {
 
 	var menu = Menu.buildFromTemplate([
 		{
-			label: 'TDUCTF',
+			label: 'Lepus-CTF',
 			submenu: [
 			{
 				label: 'Settings',

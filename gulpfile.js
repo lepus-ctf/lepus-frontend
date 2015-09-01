@@ -15,7 +15,7 @@ gulp.task('compile', function(){
 var commonOption = {
 		dir: './',
 		out: 'release',
-		name: 'TDUCTF-2015',
+		name: 'Lepus-CTF',
 		arch: 'all',
 		platform: 'all',
 		asar: true,

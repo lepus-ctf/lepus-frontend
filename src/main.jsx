@@ -57,14 +57,14 @@ class Main extends React.Component {
 						case "notice":
 							setTimeout(function() {
 								Api.announcement(data.id, (json) => {
-									var n = new Notification('TDUCTF 2015 - Announcements', {
+									var n = new Notification('Lepus-CTF - Announcements', {
 										body: json.title
 									});
 									n.onclick = () => {
 										this.context.router.transitionTo("announcements");
 									}.bind(this);
 								}.bind(this), (mes) => {
-									var n = new Notification('TDUCTF 2015 - Announcements', {
+									var n = new Notification('Lepus-CTF - Announcements', {
 										body: 'New 1 announcement'
 									});
 									n.onclick = () => {
@@ -77,14 +77,14 @@ class Main extends React.Component {
 							console.log(JSON.stringify(data));
 							setTimeout(function() {
 								Api.problem(data.id, (json) => {
-									var n = new Notification('TDUCTF 2015 - Problems', {
+									var n = new Notification('Lepus-CTF - Problems', {
 										body: json.title + ' updated'
 									});
 									n.onclick = () => {
 										this.context.router.transitionTo("problems");
 									}.bind(this);
 								}.bind(this), (mes) => {
-									var n = new Notification('TDUCTF 2015 - Problems', {
+									var n = new Notification('Lepus-CTF - Problems', {
 										body: 'New 1 problem update'
 									});
 									n.onclick = () => {
@@ -103,7 +103,7 @@ class Main extends React.Component {
 				case "youtube":
 					this.setState({url: "https://www.youtube.com/embed/" + data["video_id"] + "?autoplay=1&controls=0&fs=0&showinfo=0&rel=0&disablekb=1&modestbranding=1"});
 					if (!this.state.breakingnews) {
-						var n = new Notification('TDUCTF 2015', {
+						var n = new Notification('Lepus-CTF', {
 							body: 'Breaking news!'
 						});
 						n.onclick = () => {
@@ -225,7 +225,7 @@ class Main extends React.Component {
 					<RouteHandler routerState={this.props.routerState} />
 					<div className="ui left fixed vertical menu inverted">
 						<div className="header item">
-							<h1 className="header ui center aligned teal">TDUCTF</h1>
+							<h1 className="header ui center aligned teal">Lepus-CTF</h1>
 						</div>
 						<div className="header item">
 							<h2 className="header ui center aligned inverted">

@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=TDUCTF-2015
-Comment=TDUCTF frontend application
-Exec=TDUCTF-2015
+Name=Lepus-CTF
+Comment=Lepus-CTF frontend application
+Exec=Lepus-CTF
 Icon=app-icon.png
 Type=Application
 Terminal=false

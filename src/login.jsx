@@ -84,10 +84,10 @@ class Login extends React.Component {
 		return (
 				<div className="ui center aligned grid" style={fullHeight}>
 					<div className="column" style={size400}>
-						<img src="res/banner.png" alt="TDUCTF 2015 Bunner" className="ui image" style={size400} />
+						<img src="res/banner.png" alt="Lepus-CTF Bunner" className="ui image" style={size400} />
 						<h2 className="ui teal header">
 							<div className="content">
-								Welcome to TDUCTF 2015
+								Welcome to Lepus-CTF
 							</div>
 						</h2>
 						<form className={'ui large form' + (this.state.error ? ' error' : '') + (this.state.success ? ' success' : '')}>
