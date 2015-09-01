@@ -1,9 +1,9 @@
 {
-  "name": "tductf-frontend",
+  "name": "lepus-frontend",
   "version": "0.1.0",
-  "description": "TDUCTF front-end application",
+  "description": "Lepus-CTF front-end application",
   "main": "app.js",
-  "desktopName": "tductf.desktop",
+  "desktopName": "lepus-ctf.desktop",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "gulp compile",
@@ -18,19 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mzyy94/tductf-frontend.git"
+    "url": "https://github.com/lepus-ctf/lepus-frontend.git"
   },
   "keywords": [
-    "tductf",
+    "lepus-ctf",
     "ctf",
     "electron"
   ],
   "author": "mzyy94",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mzyy94/tductf-frontend/issues"
+    "url": "https://github.com/lepus-ctf/lepus-frontend/issues"
   },
-  "homepage": "https://github.com/mzyy94/tductf-frontend",
+  "homepage": "https://github.com/lepus-ctf/lepus-frontend",
   "devDependencies": {
     "electron-packager": "^5.0.2",
     "electron-prebuilt": "^0.30.6",

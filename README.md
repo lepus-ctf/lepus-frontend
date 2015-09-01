@@ -1,6 +1,6 @@
-# TDUCTF frontend application
+# Lepus-CTF frontend application
 
-CTF frontent application
+CTF frontent application made with Electron
 
 ## Usage
 
