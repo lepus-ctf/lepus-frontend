@@ -79,32 +79,20 @@ class Problem extends React.Component {
 			var downloadState = this.state.downloading;
 			downloadState[filename] = true;
 			this.setState({downloading: downloadState});
-			Api.downloadFile(filepath, (blob) => {
+			Api.downloadFile(filepath, savepath, () => {
+				console.log("File saving done");
 				var downloadState = this.state.downloading;
 				downloadState[filename] = false;
-				this.setState({downloading: downloadState});
-				fs.writeFile(savepath, blob, (err) => {
-					if (err) {
-						console.error("File saving error");
-						var downloadState = this.state.downloading;
-						this.setState({
-							error: ["File saving error, please copy link."],
-							downloading: downloadState
-						});
-					} else {
-						console.log("File saving done");
-						this.setState({
-							downloading: downloadState
-						});
-					}
-				}.bind(this));
-			}.bind(this), () => {
+				this.setState({
+					downloading: downloadState
+				});
+			}.bind(this), (err) => {
 				console.error("File download error");
 				var downloadState = this.state.downloading;
 				downloadState[filename] = false;
 				this.setState({
 					error: ["File downloading error, please copy link."],
-							downloading: downloadState
+					downloading: downloadState
 				});
 			}.bind(this));
 		}.bind(this));

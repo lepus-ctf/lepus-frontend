@@ -29,6 +29,7 @@ export class Api {
 			args[0]._headerNames['cookie'] = 'Cookie';
 			return _addRequest.apply(this, args);
 		};
+		this.https = https;
 	}
 	setCriticalAction(func) {
 		this.errorHandler.criticalAction = func || (() => {});
@@ -184,18 +185,35 @@ export class Api {
 			});
 	}
 
-	downloadFile(filepath, success, failure) {
-		this.superagent
-			.get(this.serverUrl + filepath)
-			.buffer(true)
-			.end((err, res) => {
-				if (err) {
-					const error = this.errorHandler.parseError(err, res);
-					failure(error);
+	downloadFile(filepath, savepath, success, failure) {
+		this.https
+			.get(this.serverUrl + filepath, (res) => {
+				if (res.statusCode >= 200 && res.statusCode < 300) {
+					var fs = require('fs');
+					var stream = fs.createWriteStream(savepath);
+					stream.on('error', (err) => {
+						const error = this.errorHandler.parseError(err, null);
+						failure(error);
+					});
+					res.pipe(stream);
+					stream.on('finish', () => {
+						stream.close((err) => {
+							if (err) {
+								const error = this.errorHandler.parseError(err, null);
+								failure(error);
+							} else {
+								success();
+							}
+						});
+					})
 				} else {
-					this.agent.saveCookies(res);
-					success(Buffer(res.text, 'binary'));
+					const error = this.errorHandler.parseError(res.statusMessage, res);
+					failure(error);
 				}
+			}).on('error', (err) => {
+				console.log(err);
+				const error = this.errorHandler.parseError(err, null);
+				failure(error);
 			});
 	}
 
