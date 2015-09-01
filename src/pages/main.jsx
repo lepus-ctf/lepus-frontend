@@ -1,7 +1,7 @@
 import React from 'react';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_TEAMINFO, UPDATE_SERVEREVENT, UPDATE_CTFCONF, UPDATE_COUNTDOWN, EE} from './store'
+import {UPDATE_TEAMINFO, UPDATE_SERVEREVENT, UPDATE_CTFCONF, UPDATE_COUNTDOWN, EE} from '../data/store'
 import Router from 'react-router';
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;

@@ -1,7 +1,7 @@
 import React from 'react';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_USERINFO} from './store'
+import {UPDATE_USERINFO} from '../data/store'
 
 class Login extends React.Component {
 	constructor(props) {

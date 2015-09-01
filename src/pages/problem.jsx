@@ -1,8 +1,8 @@
 import React from 'react';
 import Router from 'react-router';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_A_PROBLEM, EE} from './store'
+import {UPDATE_A_PROBLEM, EE} from '../data/store'
 global.React = React;
 var md2react = require('md2react');
 var remote = require('remote');

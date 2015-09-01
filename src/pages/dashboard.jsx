@@ -1,7 +1,7 @@
 import React from 'react';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_TEAMLIST} from './store'
+import {UPDATE_TEAMLIST} from '../data/store'
 
 class Dashboard extends React.Component {
 	constructor(props) {

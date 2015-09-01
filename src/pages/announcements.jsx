@@ -1,7 +1,7 @@
 import React from 'react';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_ANNOUNCEMENTS, RESET_EVENTS} from './store'
+import {UPDATE_ANNOUNCEMENTS, RESET_EVENTS} from '../data/store'
 global.React = React;
 var md2react = require('md2react');
 

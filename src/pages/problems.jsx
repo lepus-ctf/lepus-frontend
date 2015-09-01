@@ -1,7 +1,7 @@
 import React from 'react';
-import Api from './api'
+import Api from '../api/api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS, RESET_EVENTS, SET_VISIBLE_CATEGORY, SET_VISIBLE_LEVEL, SET_HIDDEN_SOLVED} from './store'
+import {UPDATE_PROBLEMS, RESET_EVENTS, SET_VISIBLE_CATEGORY, SET_VISIBLE_LEVEL, SET_HIDDEN_SOLVED} from '../data/store'
 import Router from 'react-router';
 var Link = Router.Link;
 
