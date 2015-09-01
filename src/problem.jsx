@@ -116,7 +116,7 @@ class Problem extends React.Component {
 	render() {
 		const {teaminfo, problems} = this.props;
 		var problem = problems[this.props.params.id];
-		if (!problem) return (<div>Can't find a problem.</div>);
+		if (!problem) return (<div>Cannot find a problem.</div>);
 		var problem_status = {};
 		if (teaminfo && teaminfo.questions) {
 			teaminfo.questions.forEach((t_state) => {
