@@ -17,7 +17,7 @@ class Login extends React.Component {
 		};
 	}
 	componentWillMount() {
-		document.body.style.backgroundColor = "black";
+		document.body.style.backgroundColor = "#f7c5d2";
 		if (this.props && this.props.query && this.props.query.message) {
 			this.setState({
 				error: true,
@@ -75,6 +75,8 @@ class Login extends React.Component {
 	}
 	render() {
 		var size400 = {
+			paddingTop: "20px",
+			paddingBottom: "10px",
 			maxWidth: "400px",
 			maxHeight: "400px"
 		};
@@ -84,8 +86,8 @@ class Login extends React.Component {
 		return (
 				<div className="ui center aligned grid" style={fullHeight}>
 					<div className="column" style={size400}>
-						<img src="res/banner.png" alt="Lepus-CTF Bunner" className="ui image" style={size400} />
-						<h2 className="ui teal header">
+						<img src="res/lepus.svg" alt="Lepus-CTF Bunner" className="ui image" style={size400} />
+						<h2 className="ui blue header">
 							<div className="content">
 								Welcome to Lepus-CTF
 							</div>
