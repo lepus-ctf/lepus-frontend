@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import Api from './api'
 import {connect} from 'react-redux';
-import {UPDATE_PROBLEMS, EE} from './store'
+import {UPDATE_A_PROBLEM, EE} from './store'
 global.React = React;
 var md2react = require('md2react');
 var remote = require('remote');
@@ -27,8 +27,8 @@ class Problem extends React.Component {
 	}
 	componentWillMount() {
 		// Tap tap API server
-		Api.problems((json) => {
-			this.props.updateProblems(json);
+		Api.problem(this.props.params.id, (json) => {
+			this.props.updateAProblem(json);
 		}, (mes) => {
 			this.setState({
 				error: mes
@@ -115,12 +115,7 @@ class Problem extends React.Component {
 	}
 	render() {
 		const {teaminfo, problems} = this.props;
-		var problem;
-		problems.forEach((id, current) => {
-			if (id == current.id) {
-				problem = current;
-			}
-		}.bind(this, this.props.params.id));
+		var problem = problems[this.props.params.id];
 		if (!problem) return (<div>Can't find a problem.</div>);
 		var problem_status = {};
 		if (teaminfo && teaminfo.questions) {
@@ -230,7 +225,7 @@ export default connect(
 			problems: state.problems
 		}),
 		(dispatch) => ({
-			updateProblems: (data) => dispatch({type: UPDATE_PROBLEMS, data: data}),
+			updateAProblem: (data) => dispatch({type: UPDATE_A_PROBLEM, data: data}),
 			tooManyWrongAnswer: () => dispatch({type: EE, data: true}),
 		})
 		)(Problem);

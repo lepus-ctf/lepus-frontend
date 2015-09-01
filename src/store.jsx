@@ -3,6 +3,7 @@ import {createStore} from 'redux';
 export const UPDATE_USERINFO = 'updateUserinfo';
 export const UPDATE_TEAMINFO = 'updateTeaminfo';
 export const UPDATE_PROBLEMS = 'updateProblems';
+export const UPDATE_A_PROBLEM = 'updateAProblem';
 export const UPDATE_TEAMLIST = 'updateTeamlist';
 export const UPDATE_ANNOUNCEMENTS = 'updateAnnouncements';
 export const UPDATE_SERVEREVENT = 'updateServerEvent';
@@ -24,7 +25,7 @@ const initialState = {
 	visibleLevel: -1,
 	userInfo: {},
 	teamInfo: {},
-	problems: [],
+	problems: {},
 	solvedTeams: {},
 	teamList: [],
 	announcements: [],
@@ -48,7 +49,16 @@ const dataStore = (state=initialState, action) => {
 			state["solved"] = solved;
 			return state;
 		case UPDATE_PROBLEMS:
-			state["problems"] = action.data;
+			if (action.data.length) {
+				action.data.forEach((problem) => {
+					state["problems"][problem.id] = problem;
+				})
+			}
+			return state;
+		case UPDATE_A_PROBLEM:
+			if (action.data.id != undefined) {
+				state["problems"][action.data.id] = action.data;
+			}
 			return state;
 		case UPDATE_TEAMLIST:
 			const teamlist = action.data.sort((current, next) => {

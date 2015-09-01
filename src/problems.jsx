@@ -17,6 +17,7 @@ class Problems extends React.Component {
 		// Tap tap API server
 		Api.problems((json) => {
 			this.props.updateProblems(json);
+			this.setState();
 		}, (mes) => {
 			this.setState({
 				error: mes
@@ -66,8 +67,9 @@ class Problems extends React.Component {
 		}
 		var maxPoint = -1;
 		var categories = {};
-		console.log(visibleLevel);
-		var cards = problems.map((problem) => {
+		var cards = [];
+		for (var id in problems) {
+			var problem = problems[id];
 			var difficulty = [];
 			for (var i = 0; i < problem["points"]; i+=100) {
 				difficulty.push(<i className="lightning icon" key={i}></i>);
@@ -91,7 +93,7 @@ class Problems extends React.Component {
 					solved = <div>{Math.round(problem_status[problem["id"]].points / problem["points"] * 100)}% Solved</div>
 				}
 			}
-			return (
+			cards.push(
 				<div className={"ui card " + (colors[problem["category"]["id"]] || "black")} key={problem["id"]}>
 					<div className="content">
 						<Link className="header" to="problem" params={{id: problem["id"]}}>{problem["title"]}</Link>
@@ -119,7 +121,7 @@ class Problems extends React.Component {
 					</div>
 				</div>
 				);
-		})
+		}
 		var searchInput = "";
 		var categoryList = [
 					<div className="result" key="-1" data-id="-1" onClick={this.onCategoryClick.bind(this)}>
