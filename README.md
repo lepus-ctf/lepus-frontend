@@ -17,8 +17,8 @@ $ npm run compile
 $ npm start
 ```
 
-    NOTE: If you want to set a specific score-server url, use `--host=` option like
-    `npm run compile -- --host=https://score.example.ctf`
+> NOTE: If you want to set a specific score-server url, use `--host=` option like
+> `npm run compile -- --host=https://score.example.ctf`
 
 ### Packaging
 ```
