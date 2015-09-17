@@ -44,7 +44,12 @@ gulp.task('download:font', function (done) {
 });
 
 gulp.task('compile', function(){
+	var host = process.argv[3] ? process.argv[3].split('--host=').pop() : '';
+	if (!host) {
+		host = "https://score.sakura.tductf.org";
+	}
 	return gulp.src('src/**/*.{js,jsx}')
+		.pipe($.replace('SCORE_SERVER_URL', host))
 		.pipe(
 			$.babel({
 				stage: 0

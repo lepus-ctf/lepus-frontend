@@ -4,7 +4,7 @@ export class Api {
 	constructor() {
 		this.superagent = require('superagent');
 		this.agent = require('superagent').agent();
-		this.serverUrl = "https://score.sakura.tductf.org";
+		this.serverUrl = "SCORE_SERVER_URL";
 		this.apiEndpoint = this.serverUrl + "/api"
 		this.token = "";
 		this.errorHandler = new ErrorHandler();
