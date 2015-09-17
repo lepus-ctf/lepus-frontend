@@ -42,7 +42,7 @@ class Main extends React.Component {
 	}
 	watchServerEvent() {
 		var socket = require('socket.io-client');
-		var io = socket('https://score.sakura.tductf.org/', {
+		var io = socket('SCORE_SERVER_URL', {
 				secure: true,
 				transports: ["websocket"]
 				});
