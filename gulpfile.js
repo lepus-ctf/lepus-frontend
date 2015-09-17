@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
-var packager = require('electron-packager');
+var browserify = require('browserify');
+var babelify = require('babelify');
 
 gulp.task('download:font', function (done) {
 	var urls = [
@@ -43,89 +44,68 @@ gulp.task('download:font', function (done) {
 	process.emit('download', 0);
 });
 
+var source = require('vinyl-source-stream');
+
+
 gulp.task('compile', function(){
-	var host = process.argv[3] ? process.argv[3].split('--host=').pop() : '';
-	if (!host) {
-		host = "https://score.sakura.tductf.org";
+	return browserify({
+		extensions: ['.js', '.jsx'],
+		entries: 'src/index.jsx',
+	})
+	.transform(babelify.configure({
+		ignore: /(bower_components)|(node_modules)/
+	}))
+	.bundle()
+	.pipe(source('index.js'))
+	.pipe(gulp.dest('js'));
+});
+
+gulp.task('demo', function(done){
+	var port = process.argv[3];
+	port = !!port ? (port.split("=").pop()) : 3000;
+
+	var request = require('request');
+	var http = require('http');
+	var fs = require('fs');
+	var path = require('path');
+	var route = function(req, res) {
+		var response = function(code, data, contentType) {
+			res.writeHead(code, {"Content-Type": contentType ? contentType : "text/plain"});
+			res.write(!!data ? data : code + "\n", 'binary');
+			res.end();
+		}
+		var filename = path.join(process.cwd(), req.url);
+		fs.exists(filename, function(exists){
+			if (!exists) { // proxy to REST API server
+				req.pipe(request({method: req.method, port: port, url:  "http://127.0.0.1:" + port + req.url})).pipe(res);
+			} else {
+				if (fs.statSync(filename).isDirectory()) { filename += '/index.html'; }
+				fs.readFile(filename, "binary", function(err, file){
+					if (err) { response(500); return ; }
+					switch (path.extname(filename)) {
+						case ".html":
+						case ".css":
+							response(200, file, "text/" + path.extname(filename).slice(1));
+							break;
+						case ".js":
+							response(200, file, "text/javascript");
+							break;
+						case ".png":
+						case ".jpeg":
+						case ".jpg":
+						case ".gif":
+							response(200, file, "image/" + path.extname(filename).slice(1));
+							break;
+						case ".svg":
+							response(200, file, "image/svg+xml");
+							break;
+						default:
+							response(200, file, "text/plain");
+					}
+				});
+			}
+		});
 	}
-	return gulp.src('src/**/*.{js,jsx}')
-		.pipe($.replace('SCORE_SERVER_URL', host))
-		.pipe(
-			$.babel({
-				stage: 0
-			})
-		)
-		.pipe(gulp.dest('js'));
+
+	http.createServer(route).listen(8000, '127.0.0.1');
 });
-
-var commonOption = {
-		dir: './',
-		out: 'release',
-		name: 'Lepus-CTF',
-		arch: 'all',
-		platform: 'all',
-		asar: true,
-		ignore: [
-			'./node_modules/electron*',
-			'./node_modules/.bin',
-			'./release/',
-			'./src/',
-			'./.git*'
-		],
-		version: '0.30.6'
-}
-
-gulp.task('package:darwin', ['compile'], function (done) {
-	var option = commonOption;
-	option.platform = 'darwin';
-	option.arch = 'x64';
-	packager(option, function (err, path) {
-		done();
-	});
-});
-
-gulp.task('package:linux:ia32', ['compile'], function (done) {
-	var option = commonOption;
-	option.platform = 'linux';
-	option.arch = 'ia32';
-	packager(option, function (err, path) {
-		done();
-	});
-});
-
-gulp.task('package:linux:x64', ['compile'], function (done) {
-	var option = commonOption;
-	option.platform = 'linux';
-	option.arch = 'x64';
-	packager(option, function (err, path) {
-		done();
-	});
-});
-
-gulp.task('package:win32:ia32', ['compile'], function (done) {
-	var option = commonOption;
-	option.platform = 'win32';
-	option.arch = 'ia32';
-	packager(option, function (err, path) {
-		done();
-	});
-});
-
-gulp.task('package:win32:x64', ['compile'], function (done) {
-	var option = commonOption;
-	option.platform = 'win32';
-	option.arch = 'x64';
-	packager(option, function (err, path) {
-		done();
-	});
-});
-
-gulp.task('package:all', [
-		'package:darwin',
-		'package:linux:ia32',
-		'package:linux:x64',
-		'package:win32:ia32',
-		'package:win32:x64'], function (done) {
-	done();
-});
-

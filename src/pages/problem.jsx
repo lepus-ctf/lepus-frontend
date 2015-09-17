@@ -5,10 +5,6 @@ import {connect} from 'react-redux';
 import {UPDATE_A_PROBLEM, EE} from '../data/store'
 global.React = React;
 var md2react = require('md2react');
-var remote = require('remote');
-var dialog = remote.require('dialog');
-var clipboard = remote.require('clipboard');
-var fs = remote.require('fs');
 var Link = Router.Link;
 
 class Problem extends React.Component {
@@ -17,7 +13,6 @@ class Problem extends React.Component {
 		this.state = {
 			copiedLink: "",
 			flagText: "",
-			downloading: {},
 			pending: false,
 			failed: false,
 			correct: false,
@@ -66,52 +61,10 @@ class Problem extends React.Component {
 		})
 		return false;
 	}
-	saveFile(filename, filepath) {
-		if (this.state.downloading[filename]) {
-			return;
-		}
-		console.log("File saving");
-		dialog.showSaveDialog({ defaultPath: filename}, (savepath) => {
-			if (savepath === undefined) {
-				console.log("File saving canceld");
-				return;
-			}
-			var downloadState = this.state.downloading;
-			downloadState[filename] = true;
-			this.setState({downloading: downloadState});
-			Api.downloadFile(filepath, savepath, () => {
-				console.log("File saving done");
-				var downloadState = this.state.downloading;
-				downloadState[filename] = false;
-				this.setState({
-					downloading: downloadState
-				});
-			}.bind(this), (err) => {
-				console.error("File download error");
-				var downloadState = this.state.downloading;
-				downloadState[filename] = false;
-				this.setState({
-					error: ["File downloading error, please copy link."],
-					downloading: downloadState
-				});
-			}.bind(this));
-		}.bind(this));
-	}
 	clearError() {
 		this.setState({
 			error: null
 		});
-	}
-	copyDownloadLink(name, path) {
-		clipboard.writeText(Api.serverUrl + path);
-		this.setState({
-			copiedLink: name
-		});
-		setTimeout(function() {
-			this.setState({
-				copiedLink: ""
-			});
-		}.bind(this), 3000);
 	}
 	render() {
 		const {teaminfo, problems} = this.props;
@@ -143,13 +96,10 @@ class Problem extends React.Component {
 			} else {
 				button = (
 					<div className="ui buttons">
-						<button className={'ui labeled icon button' + (this.state.downloading[file["name"]] ? ' loading' : '') + (this.state.copiedLink == file.name ? ' olive' : ' orange')} onClick={this.saveFile.bind(this, file["name"], file["url"])} key={file["url"]}>
+						<a className="ui labeled icon button" key={file["url"]}>
 							<i className="file archive outline icon"></i>
-							{this.state.copiedLink == file.name ? "Link copied!" : file["name"]}
-						</button>
-						<button className="ui icon button olive"  data-id={file["id"]} onClick={this.copyDownloadLink.bind(this, file["name"], file["url"])}>
-							<i className="file linkify icon"></i>
-						</button>
+							{file["name"]}
+						</a>
 					</div>
 					);
 			}

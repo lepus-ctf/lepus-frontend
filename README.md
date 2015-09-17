@@ -1,6 +1,8 @@
 # Lepus-CTF frontend application
 
-CTF frontent application made with Electron
+CTF frontent application
+
+*web browser support __Beta__*
 
 ## Usage
 
@@ -10,21 +12,22 @@ CTF frontent application made with Electron
 $ npm install
 ```
 
-### Build and run
+### Build
 
 ```
 $ npm run compile
-$ npm start
 ```
 
-> NOTE: If you want to set a specific score-server url, use `--host=` option like
-> `npm run compile -- --host=https://score.example.ctf`
+### Demo
 
-### Packaging
+Start demo server on http://127.0.0.1:8000 and proxy REST API server to localhost:3000(default).
+
 ```
-$ npm run package:all
+$ npm run demo
 ```
 
+> NOTE: If you want to proxy to a specific local score-server, you can set the port number
+> with `--port=` option like `npm run demo -- --port=8080`
 
 ## License
 MIT
