@@ -27,7 +27,7 @@ export class Api {
 	}
 	login(username, password, success, failure) {
 		this.agent.jar = new CookieJar; // Reset for re-login
-		this.superagent
+		this.agent
 			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})
 			.end((err, res) => {
@@ -43,7 +43,7 @@ export class Api {
 	}
 
 	signup(username, password, success, failure) {
-		this.superagent
+		this.agent
 			.post(this.apiEndpoint + '/users.json')
 			.send({username: username, password: password, team_name: username, team_password: password})
 			.end((err, res) => {
@@ -57,7 +57,7 @@ export class Api {
 	}
 
 	configurations(success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/configurations.json')
 			.end((err, res) => {
 				if (err) {
@@ -71,7 +71,7 @@ export class Api {
 	}
 
 	problems(success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/questions.json')
 			.query({include: '1'})
 			.end((err, res) => {
@@ -86,7 +86,7 @@ export class Api {
 	}
 
 	problem(id, success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/questions/' + id + '.json')
 			.query({include: '1'})
 			.end((err, res) => {
@@ -101,7 +101,7 @@ export class Api {
 	}
 
 	announcement(id, success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/notices/' + id + '.json')
 			.end((err, res) => {
 				if (err) {
@@ -115,7 +115,7 @@ export class Api {
 	}
 
 	announcements(success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/notices.json')
 			.end((err, res) => {
 				if (err) {
@@ -129,7 +129,7 @@ export class Api {
 	}
 
 	submitFlag(id, flag, success, failure) {
-		this.superagent
+		this.agent
 			.post(this.apiEndpoint + '/answers.json')
 			.set('X-CSRFToken', this.token)
 			.send({question: id, answer: flag})
@@ -149,7 +149,7 @@ export class Api {
 	}
 
 	teamlist(success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/teams.json')
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
@@ -163,7 +163,7 @@ export class Api {
 	}
 
 	team(id, success, failure) {
-		this.superagent
+		this.agent
 			.get(this.apiEndpoint + '/teams/' + id + '.json')
 			.set('X-CSRFToken', this.token)
 			.end((err, res) => {
