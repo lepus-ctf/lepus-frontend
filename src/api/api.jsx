@@ -1,9 +1,7 @@
 import ErrorHandler from './error-handler'
-var CookieJar = require('cookiejar').CookieJar;
 export class Api {
 	constructor() {
 		this.superagent = require('superagent');
-		this.agent = require('superagent').agent();
 		this.serverUrl = "SCORE_SERVER_URL";
 		this.apiEndpoint = this.serverUrl + "/api"
 		this.token = "";
@@ -26,7 +24,7 @@ export class Api {
 		this.errorHandler.criticalAction = func || (() => {});
 	}
 	login(username, password, success, failure) {
-		this.agent.jar = new CookieJar; // Reset for re-login
+		this.agent = this.superagent.agent();
 		this.agent
 			.post(this.apiEndpoint + '/auth.json')
 			.send({username: username, password: password})
