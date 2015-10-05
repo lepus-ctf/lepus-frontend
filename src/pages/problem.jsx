@@ -11,7 +11,6 @@ class Problem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			copiedLink: "",
 			flagText: "",
 			pending: false,
 			failed: false,
@@ -83,26 +82,14 @@ class Problem extends React.Component {
 			width: progress + "%"
 		};
 		var attachments = problem["files"].map((file) => {
-			var button;
-			if (file["size"] > 5 * 1024 * 1024) { // 5MB
-				button = (
+			var button = (
 					<div className="ui buttons">
-						<button className="ui labeled icon button olive" onClick={this.copyDownloadLink.bind(this, file["name"], file["url"])} key={file["url"]}>
-							<i className="file linkify icon"></i>
-							{this.state.copiedLink == file.name ? "Link copied!" : file["name"]}
-						</button>
-					</div>
-					);
-			} else {
-				button = (
-					<div className="ui buttons">
-						<a className="ui labeled icon button" key={file["url"]}>
+						<a className="ui labeled icon button" key={file["url"]} href={file["url"]} target="_blank">
 							<i className="file archive outline icon"></i>
 							{file["name"]}
 						</a>
 					</div>
 					);
-			}
 			return (
 				<div>
 					{button}
