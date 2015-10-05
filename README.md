@@ -20,7 +20,7 @@ $ npm run compile
 
 ### Demo
 
-Start demo server on http://127.0.0.1:8000 and proxy REST API server to localhost:3000(default).
+Start demo server on http://127.0.0.1:3000 and proxy REST API server to localhost:8000(default).
 
 ```
 $ npm run demo

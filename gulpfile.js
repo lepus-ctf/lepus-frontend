@@ -62,7 +62,7 @@ gulp.task('compile', function(){
 
 gulp.task('demo', function(done){
 	var port = process.argv[3];
-	port = !!port ? (port.split("=").pop()) : 3000;
+	port = !!port ? (port.split("=").pop()) : 8000;
 
 	var request = require('request');
 	var http = require('http');
@@ -107,5 +107,5 @@ gulp.task('demo', function(done){
 		});
 	}
 
-	http.createServer(route).listen(8000, '127.0.0.1');
+	http.createServer(route).listen(3000, '127.0.0.1');
 });
