@@ -78,15 +78,15 @@ class Problems extends React.Component {
 
 			categories[problem["category"]["name"]] = problem["category"]["id"];
 			if (visibleCategory >= 0 && visibleCategory != problem["category"]["id"]) {
-				return
+				continue
 			} else if (visibleLevel > 0 && ((visibleLevel * 100) < problem["points"] || ((visibleLevel - 1) * 100) >= problem["points"])) {
-				return
+				continue
 			}
 			var solved;
 			if (problem_status[problem["id"]]) {
 				if (problem_status[problem["id"]].points == problem["points"]) {
 					if (hiddenSolved) {
-						return;
+						continue
 					}
 					solved = <div><i className="large green checkmark icon"></i>Solved</div>
 				} else {
